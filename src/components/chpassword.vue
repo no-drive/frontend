@@ -22,7 +22,7 @@ export default {
         return {
             pass:"",
             inputClass: ["form-group ", "mb-4", "d-flex ", "text-white", "flex-column", "bg-black", "border", "border-dark", "rounded-2", "h5"],
-
+            url: import.meta.env.VITE_BASE_URL
         }
     },
     methods:{
@@ -30,7 +30,7 @@ export default {
             const jwt=localStorage.getItem('jwtToken');
             console.log(jwt);
             if (jwt) {
-                fetch('http://localhost:3000/api/users/chpass', {
+                fetch(this.url+'/users/chpass', {
                     method: 'PATCH',
                     headers: {
                         "content-type": "application/json",

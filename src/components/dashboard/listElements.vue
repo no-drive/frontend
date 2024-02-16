@@ -53,7 +53,8 @@ export default
             return {
                 listaElementos: [
                 ],
-                showModal:false
+                showModal:false,
+                url:import.meta.env.VITE_BASE_URL
             }
         },
         computed: {
@@ -78,7 +79,7 @@ export default
                 })*/
                 const jwt = localStorage.getItem('jwtToken');
 
-                fetch('http://localhost:3000/api/files/get', {
+                fetch(this.url+'/files/get', {
                     method: 'GET',
                     headers: {
                         "content-type": "application/json",

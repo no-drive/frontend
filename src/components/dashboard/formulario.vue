@@ -22,7 +22,8 @@ export default {
     data() {
         return {
             nombre: undefined,
-            archivo: undefined
+            archivo: undefined,
+            url:import.meta.env.VITE_BASE_URL
         }
     },
     methods: {
@@ -34,7 +35,7 @@ export default {
             this.nombre = formulario.get('nombre');
             this.archivo = formulario.get('file');
             if (jwt && this.nombre && this.archivo) {
-                fetch('http://localhost:3000/api/files/addFile', {
+                fetch(this.url+'/files/addFile', {
                     method: 'POST',
                     headers: {
                         Authorization: jwt

@@ -1,5 +1,4 @@
 <script >
-
 export default {
     data() {
         return {
@@ -7,17 +6,18 @@ export default {
             correo: null,
             password: null,
             passwordFieldType: 'password',
-            messageServer:null
+            messageServer: null,
+            url: import.meta.env.VITE_BASE_URL
+
         }
     }, mounted() {
-        this.validateToken(); 
+        this.validateToken();
     },
     methods: {
         returnLogin() {
             this.$router.push("/register");
         },
         async login() {
-            const url = import.meta.env.VITE_BASE_URL + 'users/login'; // Cambia esto por la URL real de tu backend
             const data = {
                 user: {
                     email: this.correo,
@@ -25,7 +25,7 @@ export default {
                 }
             }
             try {
-                fetch(url, {
+                fetch(this.url + 'users/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -35,10 +35,10 @@ export default {
 
                     if (result.status == 200) {
                         result.json().then(async (data) => {
-                            if(data.response.error){
+                            if (data.response.error) {
                                 console.log(data.response.error);
-                                this.messageServer=data.response.error;
-                                return ;
+                                this.messageServer = data.response.error;
+                                return;
                             }
                             await this.$store.dispatch('login', data.response.userData);
                             localStorage.setItem('jwtToken', data.response.token);
@@ -61,7 +61,7 @@ export default {
 
             const jwt = localStorage.getItem('jwtToken');
             if (jwt) {
-                fetch('http://localhost:3000/api/users/validate', {
+                fetch(this.url + '/users/validate', {
                     method: 'post',
                     headers: {
                         "content-type": "application/json",
@@ -75,10 +75,10 @@ export default {
                                 this.$router.push("/dashboard");
                             })
                     }
-                    if(response.status==401){
-                        return ;
+                    if (response.status == 401) {
+                        return;
                     }
-                }).catch(()=>{
+                }).catch(() => {
                     console.log("error")
                 })
 
@@ -98,8 +98,8 @@ export default {
                 <label>Contraseña</label>
                 <div id="inputPass" class="d-flex align-items-center ">
                     <input required :type="passwordFieldType" v-model="password" :class=inputClass>
-                    <button  type="button" class=" mb-4 btn btn-white" @click="togglePasswordVisibility" id="btnView">
-                        <img  src="../assets/view.svg" class="p-0">
+                    <button type="button" class=" mb-4 btn btn-white" @click="togglePasswordVisibility" id="btnView">
+                        <img src="../assets/view.svg" class="p-0">
                     </button>
                 </div>
                 <h2 v-if="messageServer">{{ messageServer }}</h2>
@@ -116,6 +116,7 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
 #btnView {
     position: relative;
     align-self: flex-end;
@@ -123,19 +124,20 @@ export default {
     height: 100%;
     padding: 0;
     margin: 0;
-    gap:2px;
-    
+    gap: 2px;
+
 }
-#inputPass{
+
+#inputPass {
     position: relative;
     display: flex;
     flex-direction: row;
 }
-img{
+
+img {
     position: relative;
     width: 50px;
     height: 50px;
     padding: 0;
     margin: 0;
-}
-</style>
+}</style>

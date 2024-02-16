@@ -1,7 +1,7 @@
 <template>
     <!-- Sidebar -->
     <div class="d-flex flex-column bg-blue p-2" id="wrapper">
-        <button @click="closeModal"  id="btnClose">
+        <button @click="closeModal" id="btnClose">
             <img src="../../assets/close.png">
         </button>
         <h1 class="text-white">Configuración</h1>
@@ -14,6 +14,11 @@
 <script>
 import { mapMutations } from 'vuex';
 export default {
+    data() {
+        return {
+            url: import.meta.env.VITE_BASE_URL
+        }
+    },
     methods: {
         ...mapMutations(['increment']),
         closeModal() {
@@ -23,7 +28,7 @@ export default {
             const jwt = localStorage.getItem('jwtToken');
             console.log(jwt);
             if (jwt) {
-                fetch('http://localhost:3000/api/users/DeleteUser', {
+                fetch(this.url + '/users/DeleteUser', {
                     method: 'DELETE',
                     headers: {
                         "content-type": "application/json",
@@ -47,11 +52,11 @@ export default {
 
             }
         },
-        rmall(){
+        rmall() {
             const jwt = localStorage.getItem('jwtToken');
             console.log(jwt);
             if (jwt) {
-                fetch('http://localhost:3000/api/files/rmAllFiles', {
+                fetch(this.url+'/files/rmAllFiles', {
                     method: 'DELETE',
                     headers: {
                         "content-type": "application/json",
@@ -107,7 +112,8 @@ export default {
 #wrapper * {
     margin-bottom: 30%;
 }
-#btnClose{
+
+#btnClose {
     position: relative;
     background: transparent;
     border: 0;
@@ -115,19 +121,19 @@ export default {
     align-self: flex-end;
 
 }
-#btnClose img{
+
+#btnClose img {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
 
 }
-@media (max-width: 500px){
-    #btnClose{
-width: 100%;
-}    
+
+@media (max-width: 500px) {
+    #btnClose {
+        width: 100%;
+    }
 
 }
-
-
 </style>

@@ -14,8 +14,7 @@
         <div class="content">
             <h2>Compartir con:</h2>
             <lo class="list-group">
-                <li v-if="listPeople" v-for="(element) in listPeople" class=" list-group-item "
-                    :key="element.idusuario">
+                <li v-if="listPeople" v-for="(element) in listPeople" class=" list-group-item " :key="element.idusuario">
                     {{ element.nameUsuario }}
                 </li>
             </lo>
@@ -32,6 +31,7 @@ export default {
 
         return {
             listPeople: [],
+            url: import.meta.env.VITE_BASE_URL
         }
     }, props: {
         file: String
@@ -42,7 +42,7 @@ export default {
         getpeople() {
             const jwt = localStorage.getItem('jwtToken');
             if (jwt) {
-                fetch('http://localhost:3000/api/users/people', {
+                fetch(this.url + '/users/people', {
                     method: 'get',
                     headers: {
                         "content-type": "application/json",
