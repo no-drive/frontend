@@ -1,6 +1,5 @@
 <template>
-
-<div class="border border-black m-2 mt-0 rounded-2">
+    <div class="border border-black m-2 mt-0 rounded-2">
         <ul class="p-0" v-if="listaElementos && cambiar">
             <div class="border border-black m-2 p-2 elements" v-for="(element, indice) in listaElementos" :key="indice">
                 <iframe :src="element.archivo" class=" h-100 w-100 "></iframe>
@@ -48,13 +47,13 @@ import { mapState, mapMutations } from 'vuex';
 export default
     {
         name: "listEments",
-       
+
         data() {
             return {
                 listaElementos: [
                 ],
-                showModal:false,
-                url:import.meta.env.VITE_BASE_URL
+                showModal: false,
+                url: import.meta.env.VITE_BASE_URL
             }
         },
         computed: {
@@ -79,7 +78,7 @@ export default
                 })*/
                 const jwt = localStorage.getItem('jwtToken');
 
-                fetch(this.url+'/files/get', {
+                fetch(this.url + '/files/get', {
                     method: 'GET',
                     headers: {
                         "content-type": "application/json",
@@ -91,7 +90,9 @@ export default
                             .then(async data => {
                                 this.listaElementos = [];
                                 data.forEach((item) => {
-
+                                    /*
+                                    Decodificar los archivos que vienen en base 64
+                                    */
                                     const archivoBase64 = item.archivo;
                                     const byteCharacters = atob(archivoBase64);
                                     const byteArrays = [];
@@ -104,6 +105,9 @@ export default
                                         const byteArray = new Uint8Array(byteNumbers);
                                         byteArrays.push(byteArray);
                                     }
+                                    /**
+                                     *Insertarlo en un Blob
+                                     */
                                     const blob = new Blob(byteArrays, { type: item.mimetype });
 
                                     // Crear una URL para el blob y establecerlo como src de la imagen
@@ -124,12 +128,19 @@ export default
                     console.log("error")
                 })
             },
+
+            //Metodo de descarga de un archivo
             descargar(element) {
                 const a = document.createElement("a");
                 a.href = element.archivo;
                 a.download = element.nombre;
                 a.click();
             },
+
+            /*
+            Metodo para eliminar un archivo
+            - Tomando el id del archivo y eliminandolo por medio de node js
+            */
             eliminar(element) {
                 const jwt = localStorage.getItem('jwtToken');
                 const data = {
@@ -149,9 +160,8 @@ export default
                     }
                 });
             },
-            share(element) {   
-                console.log(element);
-                this.$emit('modal-open',element.id); // Emitir un evento para indicar que el modal se ha cerrado
+            share(element) {
+                this.$emit('modal-open', element.id); // Emitir un evento para indicar que el modal se ha cerrado
             }
         },
 

@@ -20,41 +20,52 @@
 export default {
     data() {
         return {
-            pass:"",
+            pass: "",
             inputClass: ["form-group ", "mb-4", "d-flex ", "text-white", "flex-column", "bg-black", "border", "border-dark", "rounded-2", "h5"],
             url: import.meta.env.VITE_BASE_URL
         }
     },
-    methods:{
-        changePassword(){
-            const jwt=localStorage.getItem('jwtToken');
-            console.log(jwt);
+    methods: {
+
+        /*
+        Funcion cambiar contraseña:
+            - Autentica con JWT.
+            - Valida la contraseña.
+            - Luego la cambia la contraseña.
+        */
+        changePassword() {
+            const jwt = localStorage.getItem('jwtToken');
             if (jwt) {
-                fetch(this.url+'/users/chpass', {
+                fetch(this.url + '/users/chpass', {
                     method: 'PATCH',
                     headers: {
                         "content-type": "application/json",
                         Authorization: jwt
                     },
-                    body: JSON.stringify({pass:this.pass})
+                    body: JSON.stringify({ pass: this.pass })
                 }).then(response => {
                     if (response.status == 200) {
                         response.json()
                             .then(async data => {
+                                /*
+                                TO-DO 
+                                - Mostrar al usuario El cambio exitoso de la contraseña
+                                */
                                 console.log(data);
                                 this.$router.push("/dashboard");
                             })
                     }
-                    if(response.status==401){
-                        return ;
+                    if (response.status == 401) {
+                        return;
                     }
-                }).catch(()=>{
+                }).catch(() => {
                     console.log("error")
                 })
 
             }
         },
-        returnDashboard(){
+        //Metodo re regresar al incio
+        returnDashboard() {
             this.$router.push("/dashboard");
         }
     }

@@ -11,8 +11,8 @@ export default {
     methods: {
         navigateLogin() {
             this.$router.push("/");
-        }, openModal(file) {
-
+        },
+        openModal(file) {
             this.file = file;
             console.log(this.file);
             this.showModalPeople = true

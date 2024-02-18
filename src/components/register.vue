@@ -4,7 +4,7 @@ import { ref } from 'vue';
 export default {
     data() {
         return {
-            inputClass: ["form-group ", "mb-4","text-white", "d-flex ", "flex-column", "bg-black", "border", "border-dark", "rounded-2", "h5"],
+            inputClass: ["form-group ", "mb-4", "text-white", "d-flex ", "flex-column", "bg-black", "border", "border-dark", "rounded-2", "h5"],
             user: {
                 email: undefined,
                 pwd: undefined,
@@ -14,10 +14,12 @@ export default {
         }
     },
     methods: {
-        async register() {
 
-            console.log(import.meta.env.VITE_BASE_URL);
-            const url=import.meta.env.VITE_BASE_URL+'users/Register';
+        /*
+        Metodo para registar un usuario en la base de datos
+        */
+        async register() {
+            const url = import.meta.env.VITE_BASE_URL + '/users/Register';
             if (this.validcorreo)
                 await fetch(url,
                     {
@@ -27,16 +29,26 @@ export default {
                         },
                         body: JSON.stringify({ user: this.user }),
                     })
-                    .then(() => { console.log("hola") }).catch((error) => { console.log(error) })
+                    .then(() => {
 
-        }, isValidEmail() {
+                        /*
+                        TO-DO
+                        Realizar una modificación que permita mostrar al usuario que se autentico
+                        */
+                        console.log("Se registro correctamente al usuario")
+                    }
+                    ).catch((error) => { console.log(error) })
+
+        },
+        /*
+        Validación del campo email con regex functions
+        */
+        isValidEmail() {
             console.log(this.validcorreo)
             this.validcorreo = /^[^@]+@\w+(\.\w+)+\w$/.test(this.user.email);
             return this.validcorreo;
         },
-        computed: {
 
-        }
     }
 
 
@@ -66,7 +78,7 @@ export default {
 </template>
 
 <style>
-#register{
+#register {
     position: absolute;
     top: 50%;
     left: 50%;

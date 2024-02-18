@@ -28,8 +28,15 @@ export default {
     },
     methods: {
         ...mapMutations(['increment']),
+        
+        
+        /*
+        Subir archivo al servidor
+        - Valida el JWT.
+        - Toma el id_usuario y sube el archivo a una ruta especifica.
+        - Guarda esto en la base de datos
+        */
         subirArchivo() {
-
             const formulario = new FormData(document.querySelector('#formulario'));
             const jwt = localStorage.getItem('jwtToken');
             this.nombre = formulario.get('nombre');
@@ -63,6 +70,7 @@ export default {
                 return;
             }
         },
+        //Limpiar campos
         cleanform() {
             this.name = '';
             document.querySelector('#inputfile').value = '';

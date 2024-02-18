@@ -25,8 +25,13 @@ export default {
             this.$emit('close'); // Emitir evento para cerrar el modal en el componente padre
         },
         rmUser() {
+
+            /*
+                Eliminacion del Usuario:
+                - ELiminar usuario de la base de datos.
+                - Eliminar todos los documentos de este id_usuario.
+            */
             const jwt = localStorage.getItem('jwtToken');
-            console.log(jwt);
             if (jwt) {
                 fetch(this.url + '/users/DeleteUser', {
                     method: 'DELETE',
@@ -39,6 +44,10 @@ export default {
                         response.json()
                             .then(async data => {
                                 console.log(data);
+                                /*
+                                TO-DO
+                                - Mostrar que se elimino de forma correcta al usuario
+                                */
                                 localStorage.removeItem('jwtToken');
                                 this.$router.push("/");
                             })
@@ -52,11 +61,15 @@ export default {
 
             }
         },
+        /*
+        Remove all
+        - Elimina todos los archivos de la base de dato de mongo
+        */
         rmall() {
             const jwt = localStorage.getItem('jwtToken');
             console.log(jwt);
             if (jwt) {
-                fetch(this.url+'/files/rmAllFiles', {
+                fetch(this.url + '/files/rmAllFiles', {
                     method: 'DELETE',
                     headers: {
                         "content-type": "application/json",
@@ -68,6 +81,7 @@ export default {
                         response.json()
                             .then(async data => {
                                 console.log(data);
+                                //Actualiza los archivos 
                                 this.increment();
                             })
                     }
@@ -80,10 +94,12 @@ export default {
 
             }
         },
+        //Cierra sesion eliminado en jwtToken
         closeSesion() {
             localStorage.removeItem('jwtToken');
             this.$router.push('/');
         },
+        //Cambiar de ruta para cambiar la contraseña
         navigateChpassword() {
             this.$router.push("/changePassword")
         }

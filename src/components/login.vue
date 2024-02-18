@@ -25,7 +25,7 @@ export default {
                 }
             }
             try {
-                fetch(this.url + 'users/login', {
+                fetch(this.url + '/users/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -140,4 +140,5 @@ img {
     height: 50px;
     padding: 0;
     margin: 0;
-}</style>
+}
+</style>

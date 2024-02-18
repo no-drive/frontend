@@ -28,9 +28,18 @@ const routes = [
 
   }
 ];
+
+
+/*
+Funcion Encargada de autenticar con node js 
+la validez del JWT
+*/
 async function isAuthenticated() {
 
   const jwt = localStorage.getItem('jwtToken');
+  if (!jwt) {
+    return false;
+  }
   return await fetch(url + '/users/validate', {
     method: 'post',
     headers: {
@@ -60,13 +69,16 @@ const router = createRouter({
   routes
 })
 
-
+/*
+Funcion encargada  de vigilar la autenticidad de los JWT 
+en las rutas protegidas
+*/
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     const state = await isAuthenticated();
     if (!state) {
       console.log(state);
-      next({ path: '/' }); 
+      next({ path: '/' });
     } else {
       next();
     }

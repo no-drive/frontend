@@ -26,7 +26,9 @@
 <script>
 export default {
 
-
+    /*
+    Reelizar todo lo pertinente para compartir documentos de forma efectiva
+    */
     data() {
 
         return {
