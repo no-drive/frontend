@@ -2,7 +2,7 @@ version: '3'
 
 services:
   frontend:
-    image: node:latest
+    image: node:alpine
     container_name: vue_app
     volumes:
       - .:/app
