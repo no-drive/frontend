@@ -2,7 +2,6 @@ version: '3'
 
 services:
   frontend:
-    image: node:alpine
     container_name: vue_app
     build: ./ # Ruta al Dockerfile del backend
     ports:
