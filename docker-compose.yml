@@ -5,7 +5,7 @@ services:
     container_name: vue_app
     build: ./ # Ruta al Dockerfile del backend
     ports:
-      - "2000:5173"
+      - "2000:80"
     networks:
       backend_app-network:
           ipv4_address: 11.0.0.13
