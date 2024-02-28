@@ -8,4 +8,4 @@ RUN npm run build
 FROM nginx:alpine as production-stage
 RUN mkdir /app
 COPY --from=build-stage /app/dist /app
-COPY ./path/to/your/files /app/path/to/destination
+COPY ./app /usr/share/nginx/html/
