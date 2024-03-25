@@ -9,3 +9,5 @@ FROM nginx:alpine as production-stage
 RUN mkdir /app
 COPY --from=build-stage /app/dist /app
 RUN cp -r /app/* /usr/share/nginx/html/
+
+
