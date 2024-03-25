@@ -2,7 +2,7 @@
     <div class="border border-black m-2 mt-0 rounded-2">
         <ul class="p-0" v-if="listaElementos && cambiar">
             <div class="border border-black m-2 p-2 elements" v-for="(element, indice) in listaElementos" :key="indice">
-                <iframe :src="element.archivo" class=" h-100 w-100 "></iframe>
+                <img v-if="element.mimetype == 'image/jpeg' || 'image/png'" :src="element.archivo" class="imagenes" />
                 <div class="text-center ">
                     <h1>Titulo:{{ element.nombre }}</h1>
                     <h3>Fecha:{{ element.fecha }}</h3>
@@ -12,7 +12,6 @@
                     <button class="m-3 btn btn-success" @click="share(element)">compartir</button>
                     <button class="m-3 btn btn-warning " @click="descargar(element)">Descargar</button>
                 </div>
-
             </div>
         </ul>
 
@@ -22,21 +21,23 @@
 .elements {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    height: 25vh;
+    height: 100%;
 }
+.imagenes {
+        width: 100%;
+        height: 100%;
+    }
 
-@media (max-width: 500px) {
+@media (max-width: 700px) {
     .elements {
         display: flex;
         flex-direction: column;
         height: 100%;
     }
 
-    iframe img {
-        width: 100px;
-        /* Ajusta el ancho al 100% del contenedor */
-        height: 100px;
-        /* Ajusta la altura automáticamente para mantener la proporción */
+    .imagenes {
+        width: 500px;
+        height: 500px;
     }
 }
 </style>
@@ -112,8 +113,6 @@ export default
 
                                     // Crear una URL para el blob y establecerlo como src de la imagen
                                     const dataURL = URL.createObjectURL(blob);
-                                    const imgPreview = document.createElement('iframe');
-                                    imgPreview.src = dataURL;
 
                                     item.archivo = dataURL;
                                     console.log(item);
@@ -146,7 +145,7 @@ export default
                 const data = {
                     idFile: element.id
                 };
-                fetch('http://localhost:3000/api/files/rmfile', {
+                fetch(this.url + '/api/files/rmfile', {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json', // Indica el tipo de contenido del cuerpo (JSON en este caso)

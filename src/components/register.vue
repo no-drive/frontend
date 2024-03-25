@@ -79,7 +79,7 @@ export default {
                 this.validPwd = false;
             }
             if (this.user.pwd.length < 4) {
-                this.invalidPwd = this.invalidPwd + ' Nombre usuario mayor a 8';
+                this.invalidPwd = this.invalidPwd + ' Nombre usuario menor a 4';
                 this.validPwd = false;
             }
             if (this.user.pwd.includes(' ')) {
@@ -88,6 +88,10 @@ export default {
             }
             if (this.user.pwd !== this.pwd_repeat) {
                 this.invalidPwd = this.invalidPwd + ' Contraseñas No coinciden';
+                this.validPwd = false;
+            }
+            if (this.user.pwd.length > 16) {
+                this.invalidPwd = this.invalidPwd + ' Nombre usuario mayor a 16';
                 this.validPwd = false;
             }
         }

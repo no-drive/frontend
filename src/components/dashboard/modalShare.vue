@@ -6,7 +6,7 @@
     height: 50%;
     width: 50%;
     padding: 2%;
-    position: relative;
+    position: fixed;
 }
 </style>
 <template>

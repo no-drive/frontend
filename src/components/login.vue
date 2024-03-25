@@ -1,5 +1,11 @@
-<script >
+<script>
+import Loader from './Loader.vue';
+import { ref } from 'vue';
+
 export default {
+    components: {
+        Loader
+    },
     data() {
         return {
             inputClass: ["form-group ", "mb-4", "d-flex ", "text-white", "flex-column", "bg-black", "border", "border-dark", "rounded-2", "h5"],
@@ -7,7 +13,8 @@ export default {
             password: null,
             passwordFieldType: 'password',
             messageServer: null,
-            url: import.meta.env.VITE_BASE_URL
+            url: import.meta.env.VITE_BASE_URL,
+            loading: ref(false)
 
         }
     }, mounted() {
@@ -18,41 +25,52 @@ export default {
             this.$router.push("/register");
         },
         async login() {
+     
+            this.loading=true;
+            await new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve('resolved');
+                }, 3000);
+            });
+            
             const data = {
-                user: {
-                    email: this.correo,
-                    pwd: this.password
-                }
-            }
-            try {
-                fetch(this.url + '/users/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                }).then((result) => {
-
-                    if (result.status == 200) {
-                        result.json().then(async (data) => {
-                            if (data.response.error) {
-                                console.log(data.response.error);
-                                this.messageServer = data.response.error;
-                                return;
-                            }
-                            await this.$store.dispatch('login', data.response.userData);
-                            localStorage.setItem('jwtToken', data.response.token);
-                            this.$router.push("/dashboard");
-                        }).catch((err) => {
-                            console.log(err);
-                        });
-                    }
-                })
-
-            } catch (error) {
-                console.error('Error:', error);
-            }
-
+                 user: {
+                     email: this.correo,
+                     pwd: this.password
+                 }
+             }
+             try {
+                 fetch(this.url + '/users/login', {
+                     method: 'POST',
+                     headers: {
+                         'Content-Type': 'application/json',
+                     },
+                     body: JSON.stringify(data),
+                 }).then((result) => {
+ 
+                     if (result.status == 200) {
+                         result.json().then(async (data) => {
+                             if (data.response.error) {
+                                 console.log(data.response.error);
+                                 this.messageServer = data.response.error;
+                                 this.loading=false;
+                                 return;
+                             }
+                             await this.$store.dispatch('login', data.response.userData);
+                             localStorage.setItem('jwtToken', data.response.token);
+                             this.loading=false;
+                             this.$router.push("/dashboard");
+                         }).catch((err) => {
+                             console.log(err);
+                             this.loading=false;
+                         });
+                     }
+                 })
+ 
+             } catch (error) {
+                 console.error('Error:', error);
+             }
+ 
         },
         togglePasswordVisibility() {
             this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
@@ -108,6 +126,7 @@ export default {
             <router-link class=" btn btn-white border border-black m-2" to="/register">Registrarse</router-link>
         </div>
     </div>
+    <Loader v-if="this.loading"></Loader>
 </template>
 <style>
 #login {
