@@ -1,6 +1,7 @@
 <template>
     <div  class="loader">
       Cargando...
+      <h3>{{ message }}</h3>
     </div>
   </template>
   
@@ -9,6 +10,12 @@
     data() {
       return {
       };
+    },
+    props:{
+      message:{
+        type:String,
+        required:false
+      }
     }
   };
   </script>

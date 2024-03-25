@@ -13,23 +13,28 @@
             </div><button type="submit" class="btn btn-white border border-black m-3 w-50 align-self-center">Subir
                 archivo</button>
         </form>
-
+        <Loader v-if="loading" :message="loading"></Loader>
     </div>
 </template>
 <script>
 import { mapMutations } from 'vuex';
+import Loader from '../Loader.vue';
 export default {
+    components: {
+        Loader
+    },
     data() {
         return {
             nombre: undefined,
             archivo: undefined,
-            url:import.meta.env.VITE_BASE_URL
+            url: import.meta.env.VITE_BASE_URL,
+            loading: undefined
         }
     },
     methods: {
         ...mapMutations(['increment']),
-        
-        
+
+
         /*
         Subir archivo al servidor
         - Valida el JWT.
@@ -41,27 +46,41 @@ export default {
             const jwt = localStorage.getItem('jwtToken');
             this.nombre = formulario.get('nombre');
             this.archivo = formulario.get('file');
+
+
             if (jwt && this.nombre && this.archivo) {
-                fetch(this.url+'/files/addFile', {
-                    method: 'POST',
-                    headers: {
-                        Authorization: jwt
-                    },
-                    body: formulario
-                }).then(response => {
-                    if (response.status === 200) {
-                        const inputName = document.querySelector('#inputName');
-                        inputName.classList.remove('warning');
-                        const inputFile = document.querySelector('#inputFile');
-                        inputFile.classList.remove('warning');
-                        this.increment();
+                const xhr = new XMLHttpRequest();
+
+                xhr.upload.addEventListener('progress', (evento) => {
+                    if (evento.lengthComputable) {
+                        const porcentaje = Math.round((evento.loaded / evento.total) * 100);
+                        console.log(`Porcentaje de subida: ${porcentaje}%`);
+                        this.loading = porcentaje;
+                        if(porcentaje==100){
+                            this.loading=undefined
+                        }
+                        // Aquí podrías actualizar la interfaz de usuario con el porcentaje de progreso
                     }
-                })
-                    .catch(error => {
+                });
 
-                        console.log(error)
-                    });
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            const inputName = document.querySelector('#inputName');
+                            inputName.classList.remove('warning');
+                            const inputFile = document.querySelector('#inputFile');
+                            inputFile.classList.remove('warning');
+                            this.increment();
+                        } else {
+                            console.log('Error en la subida del archivo:', xhr.statusText);
+                        }
+                    }
+                };
 
+                xhr.open('POST', this.url + '/files/addFile', true);
+                xhr.setRequestHeader('Authorization', jwt);
+                xhr.send(formulario);
+                this.loading = undefined;
             } else {
                 const inputName = document.querySelector('#inputName');
                 inputName.classList.add('warning');
@@ -70,6 +89,7 @@ export default {
                 return;
             }
         },
+
         //Limpiar campos
         cleanform() {
             this.name = '';
