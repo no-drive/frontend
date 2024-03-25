@@ -145,7 +145,7 @@ export default
                 const data = {
                     idFile: element.id
                 };
-                fetch(this.url + '/api/files/rmfile', {
+                fetch(this.url + '/files/rmfile', {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json', // Indica el tipo de contenido del cuerpo (JSON en este caso)
