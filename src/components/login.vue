@@ -26,13 +26,7 @@ export default {
         },
         async login() {
      
-            this.loading=true;
-            await new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve('resolved');
-                }, 3000);
-            });
-            
+            this.loading=true;            
             const data = {
                  user: {
                      email: this.correo,
