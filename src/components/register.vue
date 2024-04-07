@@ -166,6 +166,7 @@ export default {
       <router-link
         class="mx-auto btn btn-white m-3 border border-black h6"
         to="/"
+        id="btnLogin"
       >
         <p class="h6 m-0 p-1">Iniciar Sesion</p>
       </router-link>

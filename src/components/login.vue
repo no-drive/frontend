@@ -180,7 +180,7 @@ export default {
           Iniciar Sesion
         </button>
       </form>
-      <router-link class="btn btn-white border border-black m-2" to="/register"
+      <router-link id="btnRegister" class="btn btn-white border border-black m-2" to="/register"
         >Registrarse</router-link
       >
     </div>
