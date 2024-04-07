@@ -2,6 +2,7 @@ FROM node:hydrogen-alpine3.19 as build-stage
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
+RUN npm run test
 COPY ./ .
 RUN npm run build
 
