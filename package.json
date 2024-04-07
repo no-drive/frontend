@@ -11,6 +11,10 @@
     "preview": "vite preview",
     "coverage": "vitest run --coverage"
   },
+  "vitest": {
+    "include": "**/*.test.js",
+    "exclude": "**/node_modules/**"
+  },
   "dependencies": {
     "happy-dom": "^14.6.1",
     "selenium-webdriver": "^4.19.0",
