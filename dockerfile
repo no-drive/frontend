@@ -1,8 +1,7 @@
 FROM node:hydrogen-alpine3.19 as build-stage
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --production
-RUN npm install -g vite
+RUN npm install 
 COPY ./ .
 RUN npm run build
 
