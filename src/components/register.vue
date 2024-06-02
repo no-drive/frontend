@@ -34,24 +34,26 @@ export default {
   methods: {
     /*
         Metodo para registar un usuario en la base de datos
-        */
+    */
     async register() {
       const url = import.meta.env.VITE_BASE_URL + "/users/Register";
-      if (this.validcorre && this.validPwd && this.validUsername)
-      await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user: this.user }),
-      })
-        .then(() => {
-          this.alertMessage = "Se registro correctamente al usuario";
-          this.alert = true;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      console.log(this.validcorreo && this.username && this.pwd);
+      if (this.validcorreo){
+        await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user: this.user }),
+        }).then(() => {
+            this.alertMessage = "Se registro correctamente al usuario";
+            this.alert = true;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+  
     },
     /*
         Validación del campo email con regex functions
@@ -157,6 +159,7 @@ export default {
         />
         <p v-if="!validPwd" id="alertpwd">{{ invalidPwd }}</p>
         <button
+          id="btnSubtmit"
           type="submit"
           class="btn btn-black border border-black align-self-center"
         >
@@ -176,7 +179,7 @@ export default {
     <modal>
       <div class="content">
         <h2>{{ alertMessage }}</h2>
-        <button @click="alert = false" class="btn btn-primary m-5">
+        <button @click="alert = false" class="subtmit btn btn-primary m-5">
           Cerrar
         </button>
       </div>

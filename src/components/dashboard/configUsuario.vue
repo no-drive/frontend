@@ -6,7 +6,7 @@
         </button>
         <h1 class="text-white">Configuración</h1>
         <button @click="navigateChpassword" :class=classBtn>Cambiar clave</button>
-        <button @click="rmUser" :class=classBtn>eliminar Cuenta</button>
+        <button @click="rmUser" :class=classBtn>Eliminar Cuenta</button>
         <button @click="rmall" :class=classBtn>Eliminar Todo</button>
         <button @click="closeSesion" :class=classBtn>Cerrar Sesion</button>
     </div>

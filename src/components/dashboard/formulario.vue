@@ -33,6 +33,60 @@ export default {
     },
     methods: {
         ...mapMutations(['increment']),
+        refreshFiles() {
+                /*this.listaElementos.forEach((element)=>{
+                    this.listaElementos.push(element);
+                })*/
+                const jwt = localStorage.getItem('jwtToken');
+
+                fetch(this.url + '/files/get', {
+                    method: 'GET',
+                    headers: {
+                        "content-type": "application/json",
+                        Authorization: jwt
+                    },
+                }).then(response => {
+                    if (response.status == 200) {
+                        response.json()
+                            .then(async data => {
+                                this.listaElementos = [];
+                                data.forEach((item) => {
+                                    /*
+                                    Decodificar los archivos que vienen en base 64
+                                    */
+                                    const archivoBase64 = item.archivo;
+                                    const byteCharacters = atob(archivoBase64);
+                                    const byteArrays = [];
+                                    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+                                        const slice = byteCharacters.slice(offset, offset + 1024);
+                                        const byteNumbers = new Array(slice.length);
+                                        for (let i = 0; i < slice.length; i++) {
+                                            byteNumbers[i] = slice.charCodeAt(i);
+                                        }
+                                        const byteArray = new Uint8Array(byteNumbers);
+                                        byteArrays.push(byteArray);
+                                    }
+                                    /**
+                                     *Insertarlo en un Blob
+                                     */
+                                    const blob = new Blob(byteArrays, { type: item.mimetype });
+
+                                    // Crear una URL para el blob y establecerlo como src de la imagen
+                                    const dataURL = URL.createObjectURL(blob);
+
+                                    item.archivo = dataURL;
+                                    console.log(item);
+                                    this.listaElementos.push(item);
+                                })
+                            })
+                    }
+                    if (response.status == 401) {
+                        return;
+                    }
+                }).catch(() => {
+                    console.log("error")
+                })
+            },
 
 
         /*
@@ -99,6 +153,7 @@ export default {
     props: {
         usuario: Object,
     }
+    
 }
 </script>
 

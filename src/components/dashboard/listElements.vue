@@ -2,9 +2,10 @@
     <div class="border border-black m-2 mt-0 rounded-2">
         <ul class="p-0" v-if="listaElementos && cambiar">
             <div class="border border-black m-2 p-2 elements" v-for="(element, indice) in listaElementos" :key="indice">
-                <img v-if="element.mimetype == 'image/jpeg' || 'image/png'" :src="element.archivo" class="imagenes" />
+                <iframe v-if="element.tipo == 'application/pdf'" :src="element.fileUrl" class="imagenes"/>
+                <img  v-if="element.tipo.startsWith('image/')" :src="element.fileUrl" class="imagenes">
                 <div class="text-center ">
-                    <h1>Titulo:{{ element.nombre }}</h1>
+                    <h1>Titulo:{{ element.filename }}</h1>
                     <h3>Fecha:{{ element.fecha }}</h3>
                 </div>
                 <div class="container d-flex flex-column  justify-content">
@@ -73,7 +74,7 @@ export default
 
         methods: {
             ...mapMutations(['increment']),
-            refreshFiles() {
+             refreshFiles() {
                 /*this.listaElementos.forEach((element)=>{
                     this.listaElementos.push(element);
                 })*/
@@ -90,34 +91,32 @@ export default
                         response.json()
                             .then(async data => {
                                 this.listaElementos = [];
-                                data.forEach((item) => {
-                                    /*
-                                    Decodificar los archivos que vienen en base 64
-                                    */
-                                    const archivoBase64 = item.archivo;
-                                    const byteCharacters = atob(archivoBase64);
-                                    const byteArrays = [];
-                                    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
-                                        const slice = byteCharacters.slice(offset, offset + 1024);
-                                        const byteNumbers = new Array(slice.length);
-                                        for (let i = 0; i < slice.length; i++) {
-                                            byteNumbers[i] = slice.charCodeAt(i);
+                                console.log(data);
+                                 data.forEach(async(element) => {
+                                    const fileId = element.id_files; // ID del archivo
+                                    const url = `${this.url}/files/getfile/${fileId}`;
+                                    const token = localStorage.getItem("jwtToken"); // Reemplaza con tu token de autenticación
+
+                                    try {
+                                        const response =await fetch(url, {
+                                        method: "GET",
+                                        headers: {
+                                            "Authorization": `Bearer ${token}`
                                         }
-                                        const byteArray = new Uint8Array(byteNumbers);
-                                        byteArrays.push(byteArray);
-                                    }
-                                    /**
-                                     *Insertarlo en un Blob
-                                     */
-                                    const blob = new Blob(byteArrays, { type: item.mimetype });
+                                        });
+                                        if (response.ok) {
+                                            const blob =  await response.blob();
+                                            const fileUrl = URL.createObjectURL(blob);
+                                            element.fileUrl =fileUrl;
+                                        } else {
+                                        console.error("Error al obtener el archivo:", response.statusText);
+                                        }
+                                    } catch (error) {
+                                        console.error("Error al hacer la solicitud:", error);
+                                    }   
+                                    this.listaElementos.push(element);
 
-                                    // Crear una URL para el blob y establecerlo como src de la imagen
-                                    const dataURL = URL.createObjectURL(blob);
-
-                                    item.archivo = dataURL;
-                                    console.log(item);
-                                    this.listaElementos.push(item);
-                                })
+                        });
                             })
                     }
                     if (response.status == 401) {
@@ -143,7 +142,8 @@ export default
             eliminar(element) {
                 const jwt = localStorage.getItem('jwtToken');
                 const data = {
-                    idFile: element.id
+                    idFile: element.id_files,
+                    path:element.path
                 };
                 fetch(this.url + '/files/rmfile', {
                     method: 'DELETE',

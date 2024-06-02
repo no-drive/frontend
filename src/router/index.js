@@ -3,6 +3,7 @@ import login from "../components/login.vue";
 import dashboard from "../components/dashboard.vue";
 import register from "../components/register.vue";
 import chpassword from "../components/chpassword.vue";
+import dashboardUsers from "../components/dashboardUsers/dashboardUsers.vue";
 const url = import.meta.env.VITE_BASE_URL;
 const routes = [
   {
@@ -25,7 +26,11 @@ const routes = [
     name: "changePassword",
     component: chpassword,
     meta: { requiresAuth: true }
-
+  },
+  {
+    path: "/dashboardUsers",
+    name: "dashboardUsers",
+    component: dashboardUsers,
   }
 ];
 

@@ -1,7 +1,7 @@
 <script>
 import Loader from "./Loader.vue";
 import { ref } from "vue";
-
+import api from "@/services/apiUsers.js"
 export default {
   components: {
     Loader,
@@ -38,45 +38,25 @@ export default {
       this.$router.push("/register");
     },
     async login() {
-      this.loading = true;
+    //  this.loading = true;
       const data = {
         user: {
           email: this.correo,
           pwd: this.password,
         },
       };
-      try {
-        fetch(this.url + "/users/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }).then((result) => {
-          if (result.status == 200) {
-            result
-              .json()
-              .then(async (data) => {
-                if (data.response.error) {
-                  console.log(data.response.error);
-                  this.messageServer = data.response.error;
+      const datos =await api._login(data);
+      if (datos.response.error) {
+                  console.log(datos.response.error);
+                  this.messageServer = datos.response.error;
                   this.loading = false;
                   return;
                 }
-                await this.$store.dispatch("login", data.response.userData);
-                localStorage.setItem("jwtToken", data.response.token);
+      await this.$store.dispatch("login", datos.response.userData);
+                localStorage.setItem("jwtToken", datos.response.token);
                 this.loading = false;
                 this.$router.push("/dashboard");
-              })
-              .catch((err) => {
-                console.log(err);
-                this.loading = false;
-              });
-          }
-        });
-      } catch (error) {
-        console.error("Error:", error);
-      }
+      
     },
     togglePasswordVisibility() {
       this.passwordFieldType =
@@ -176,7 +156,7 @@ export default {
         <p v-if="!validPwd" id="alertpwd">{{ invalidPwd }}</p>
 
         <h2 v-if="messageServer">{{ messageServer }}</h2>
-        <button type="submit" class="btn btn-white border border-black m-2">
+        <button type="submit" id="btnLogin" class="btn btn-white border border-black m-2">
           Iniciar Sesion
         </button>
       </form>

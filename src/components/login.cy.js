@@ -18,4 +18,26 @@ describe('MiComponente', () => {
     cy.get('#btnLogin').click();
 
   });
+  it('Ingresar un nuevo usuario', () => {
+    cy.mount(Register);
+
+    // Llenar el formulario de registro
+    cy.get('#inputUser').type('usuario')
+    cy.get('#inputCorreo').type('nuevo_usuario@example.com')
+    cy.get('#inputPass').type('password')
+    cy.get('#inputNewPass').type('password')
+
+    // Enviar el formulario
+    cy.get('#btnSubtmit').click()
+    cy.get('#btnLogin').click()
+
+    // Verificar que el usuario se haya registrado exitosamente
+  });
+  it('Ingresar con nuevo usuario',()=>{
+    cy.mount(Login);
+
+    cy.get('#inputCorreo').type('nuevo_usuario@example.com');
+    cy.get('#inputPass').type('password');
+    cy.get('#btnLogin').click();
+  })
 });
