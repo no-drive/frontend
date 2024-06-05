@@ -1,7 +1,7 @@
 <template>
     <!-- Sidebar -->
     <div class="d-flex flex-column bg-blue p-2" id="wrapper">
-        <h1 class="text-white">Configuración</h1>
+        <h1 class="text-center mt-10">Configuración</h1>
         <button @click="navigateChpassword" :class=classBtn>Cambiar clave</button>
         <button @click="rmUser" :class=classBtn>Eliminar Cuenta</button>
         <button @click="rmall()" :class=classBtn>Eliminar Todo</button>

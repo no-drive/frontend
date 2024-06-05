@@ -1,10 +1,12 @@
 <template>
-  <div class="main">
-    <img id="imgRefrencia" src="https://mecaluxco.cdnwm.com/blog/img/almacenamiento-alta-densidad.1.2.jpg">
-  <div id="login" >
-    <div class="caja">
-      <form id= "formulario" class="caja" @submit.prevent="login">
-        <h1 class="titulo" id="titulo">Bienvenidos</h1>
+  <div class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white shadow-md rounded-lg overflow-hidden flex max-w-4xl w-full">
+    <img id="imgRefrencia" class="w-1/2" src="https://img.freepik.com/vector-premium/conjunto-iconos-almacenamiento-informacion-conjunto-dibujos-animados-iconos-vector-almacenamiento-informacion-conjunto-aislado_96318-2460.jpg ">
+    <div class=" w-2 bg-indigo-600 "></div>
+  <div id="login" class="w-1/2 p-8 justify-center" >
+    <div class="caja justify-center @">
+      <form id= "formulario" class="mb-4 justify-center h-100" @submit.prevent="login">
+        <h1 class="text-violet-950 text-3xl font-bold mb-6 " id="titulo">Bienvenidos</h1>
         <label class="subtitulo">Correo</label>
         <br>
         <input
@@ -17,8 +19,8 @@
         />
         <p v-if="!validcorreo" id="alertUser">Correo invalido</p>
         <br>
-        <label class="subtitulo">Contraseña</label>
-        <div id="passDiv" class="">
+        <label class="block text-sm font-medium text-gray-700">Contraseña</label>
+        <div id="passDiv" class="flex items-center border border-gray-300 rounded-md overflow-hidden mb-4 ">
           <input
             required
             id="inputPass"
@@ -30,22 +32,25 @@
 
           <button
             type="button"
+            class="px-3 py-2 focus:outline-none"
             @click="togglePasswordVisibility"
             id="btnView"
           >
-            <img src="../assets/view.svg" id="eyeboton" />
+            <img src="../assets/view.svg" id="eyeboton" class="h-6 w-6" />
           </button>
         </div>
         <p v-if="!validPwd" id="alertpwd">{{ invalidPwd }}</p>
 
         <h2 v-if="messageServer">{{ messageServer }}</h2>
-        <button type="submit" id="btnLogin" class="btn btn-white border border-black m-2">
+        <button type="submit" id="btnLogin" class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
           Iniciar Sesion
         </button>
       </form>
     </div>
   </div>
 </div>
+</div>
+
   <Loader v-if="this.loading"></Loader>
 </template>
 <script>
@@ -64,6 +69,7 @@ export default {
       passwordFieldType: "password",
       messageServer: null,
       validcorreo: ref(true),
+      inputClass:"mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm flex-grow px-3 py-2 focus:outline-none",
       validPwd: ref(true),
       url: import.meta.env.VITE_BASE_URL,
       loading: ref(false),
