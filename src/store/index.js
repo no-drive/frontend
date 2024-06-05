@@ -10,6 +10,9 @@ const store = createStore({
   },
   mutations: {
     increment(state){
+      console.log(
+        "Cambie de estado"
+      );
         state.update=!state.update;
     }, setUser(state, user) {
       state.user = user;

@@ -16,14 +16,18 @@ export default {
             this.file = file;
             console.log(this.file);
             this.showModalPeople = true
-        }
+        },
+        updateMessage(newMessage) {
+      this.message = newMessage;
+    }
 
     },
     data() {
         return {
             showModal: false,
             showModalPeople: false,
-            file: ''
+            file: '',
+            message:true
         }
     },
     components: {
@@ -49,11 +53,13 @@ export default {
         </div>
         <div id="divContent">
             <div id="divForm">
-                <formulario :usuario="usuario" />
+                <formulario @messageFromChildOne="updateMessage" :usuario="usuario" />
             </div>
             <div id="divlistElements">
-                <listElements @modal-open="openModal"></listElements>
+                <listElements :message="message"  @modal-open="openModal"></listElements>
             </div>
+            <router-link to="/dashboard/users">holi</router-link>
+            <router-view></router-view>
         </div>
     </div>
 </template>

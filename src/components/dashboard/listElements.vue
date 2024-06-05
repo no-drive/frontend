@@ -15,7 +15,9 @@
                 </div>
             </div>
         </ul>
-
+        <div>
+            <a v-for="n in this.seccion" @click="seccionar(n)">{{n}}</a>
+        </div>
     </div>
 </template>
 <style>
@@ -49,54 +51,69 @@ import { mapState, mapMutations } from 'vuex';
 export default
     {
         name: "listEments",
-
         data() {
             return {
                 listaElementos: [
                 ],
                 showModal: false,
-                url: import.meta.env.VITE_BASE_URL
+                url: import.meta.env.VITE_BASE_URL,
+                seccion:1,
+                count:0
             }
         },
+        props: ['message'],
+        watch: {
+    message(newMessage) {
+        this.refreshFiles();
+
+        console.log(newMessage);
+    }
+  },
         computed: {
             ...mapState(['update']),
-            cambiar() {
+             async cambiar() {
                 if (!this.update) {
-                    this.refreshFiles();
+                    await this.refreshFiles(1);
                     this.increment();
                 }
                 return this.update;
             }
 
         }, mounted() {
-            this.refreshFiles();
+            this.refreshFiles()
         },
 
         methods: {
             ...mapMutations(['increment']),
-             refreshFiles() {
-                /*this.listaElementos.forEach((element)=>{
-                    this.listaElementos.push(element);
-                })*/
+            seccionar(seccion){
+                this.refreshFiles(seccion)
+            },
+             async refreshFiles(seccion) {
                 const jwt = localStorage.getItem('jwtToken');
-
-                fetch(this.url + '/files/get', {
-                    method: 'GET',
+                const post={
+                    "limit":5,
+                    "off":(seccion!=1?(seccion-1)*5:0)
+                }
+                console.log(this.count);
+                await fetch(this.url + '/files/get', {
+                    method: 'POST',
                     headers: {
                         "content-type": "application/json",
                         Authorization: jwt
                     },
+                    body:JSON.stringify(post)
                 }).then(response => {
                     if (response.status == 200) {
                         response.json()
                             .then(async data => {
                                 this.listaElementos = [];
-                                console.log(data);
-                                 data.forEach(async(element) => {
+                                this.count =data.count[0]["COUNT(*)"];
+                                this.seccion =Math.ceil(this.count / 5); ;
+                                console.log(this.seccion);
+                                 data.files.forEach(async(element) => {
                                     const fileId = element.id_files; // ID del archivo
                                     const url = `${this.url}/files/getfile/${fileId}`;
                                     const token = localStorage.getItem("jwtToken"); // Reemplaza con tu token de autenticación
-
                                     try {
                                         const response =await fetch(url, {
                                         method: "GET",
@@ -109,21 +126,20 @@ export default
                                             const fileUrl = URL.createObjectURL(blob);
                                             element.fileUrl =fileUrl;
                                         } else {
-                                        console.error("Error al obtener el archivo:", response.statusText);
+                                        console.error("Error al obtener el archivo:", response);
                                         }
                                     } catch (error) {
                                         console.error("Error al hacer la solicitud:", error);
                                     }   
                                     this.listaElementos.push(element);
-
                         });
                             })
                     }
                     if (response.status == 401) {
                         return;
                     }
-                }).catch(() => {
-                    console.log("error")
+                }).catch((err) => {
+                    console.log(err)
                 })
             },
 
@@ -160,7 +176,7 @@ export default
                 });
             },
             share(element) {
-                this.$emit('modal-open', element.id); // Emitir un evento para indicar que el modal se ha cerrado
+                this.$emit('modal-open', element); // Emitir un evento para indicar que el modal se ha cerrado
             }
         },
 

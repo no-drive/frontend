@@ -7,8 +7,11 @@
         <h1 class="text-white">Configuración</h1>
         <button @click="navigateChpassword" :class=classBtn>Cambiar clave</button>
         <button @click="rmUser" :class=classBtn>Eliminar Cuenta</button>
-        <button @click="rmall" :class=classBtn>Eliminar Todo</button>
+        <button @click="rmall()" :class=classBtn>Eliminar Todo</button>
         <button @click="closeSesion" :class=classBtn>Cerrar Sesion</button>
+        <router-link id="btnRegister" :class=classBtn to="/register"
+        >Registrarse</router-link
+      >
     </div>
 </template>
 <script>
@@ -16,7 +19,9 @@ import { mapMutations } from 'vuex';
 export default {
     data() {
         return {
-            url: import.meta.env.VITE_BASE_URL
+            url: import.meta.env.VITE_BASE_URL,
+            classBtn: ['bg-white', 'rounded-2', 'p-2', 'text-center']
+
         }
     },
     methods: {
@@ -67,8 +72,8 @@ export default {
         */
         rmall() {
             const jwt = localStorage.getItem('jwtToken');
-            console.log(jwt);
             if (jwt) {
+                console.log(this.url);
                 fetch(this.url + '/files/rmAllFiles', {
                     method: 'DELETE',
                     headers: {
@@ -81,11 +86,11 @@ export default {
                         response.json()
                             .then(async data => {
                                 console.log(data);
-                                //Actualiza los archivos 
                                 this.increment();
                             })
                     }
                     if (response.status == 401) {
+                        console.log("negado");
                         return;
                     }
                 }).catch(() => {
@@ -105,13 +110,6 @@ export default {
         }
     },
     props: ['showModal'],
-    data() {
-        return {
-            classBtn: ['bg-white', 'rounded-2', 'p-2', 'text-center']
-        }
-    }
-
-
 }
 
 

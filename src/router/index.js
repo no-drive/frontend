@@ -15,6 +15,10 @@ const routes = [
     path: "/dashboard",
     name: "dashboard",
     component: dashboard,
+    children:[{
+      path:'users',
+      component:dashboardUsers
+    }],
     meta: { requiresAuth: true }
   }, {
     path: "/register",
@@ -27,11 +31,6 @@ const routes = [
     component: chpassword,
     meta: { requiresAuth: true }
   },
-  {
-    path: "/dashboardUsers",
-    name: "dashboardUsers",
-    component: dashboardUsers,
-  }
 ];
 
 
