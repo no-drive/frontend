@@ -1,9 +1,6 @@
 <template>
     <!-- Sidebar -->
     <div class="d-flex flex-column bg-blue p-2" id="wrapper">
-        <button @click="closeModal" id="btnClose">
-            <img src="../../assets/close.png">
-        </button>
         <h1 class="text-white">Configuración</h1>
         <button @click="navigateChpassword" :class=classBtn>Cambiar clave</button>
         <button @click="rmUser" :class=classBtn>Eliminar Cuenta</button>
@@ -16,6 +13,7 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
+import '../styles/configUsuario.css';
 export default {
     data() {
         return {
@@ -115,39 +113,3 @@ export default {
 
 
 </script>
-<style>
-#wrapper {
-    justify-content: center;
-    height: 100vh;
-    position: sticky;
-    top: 0;
-}
-
-#wrapper * {
-    margin-bottom: 30%;
-}
-
-#btnClose {
-    position: relative;
-    background: transparent;
-    border: 0;
-    width: 50%;
-    align-self: flex-end;
-
-}
-
-#btnClose img {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-
-}
-
-@media (max-width: 500px) {
-    #btnClose {
-        width: 100%;
-    }
-
-}
-</style>

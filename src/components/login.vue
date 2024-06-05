@@ -1,25 +1,64 @@
+<template>
+  <div class="main">
+    <img id="imgRefrencia" src="https://mecaluxco.cdnwm.com/blog/img/almacenamiento-alta-densidad.1.2.jpg">
+  <div id="login" >
+    <div class="caja">
+      <form id= "formulario" class="caja" @submit.prevent="login">
+        <h1 class="titulo" id="titulo">Bienvenidos</h1>
+        <label class="subtitulo">Correo</label>
+        <br>
+        <input
+          type="email"
+          v-model="correo"
+          id="inputCorreo"
+          required
+          :class="inputClass"
+          @input="isValidEmail()"
+        />
+        <p v-if="!validcorreo" id="alertUser">Correo invalido</p>
+        <br>
+        <label class="subtitulo">Contraseña</label>
+        <div id="passDiv" class="">
+          <input
+            required
+            id="inputPass"
+            :type="passwordFieldType"
+            v-model="password"
+            :class="inputClass"
+            @input="isValidPwd()"
+          />
+
+          <button
+            type="button"
+            @click="togglePasswordVisibility"
+            id="btnView"
+          >
+            <img src="../assets/view.svg" id="eyeboton" />
+          </button>
+        </div>
+        <p v-if="!validPwd" id="alertpwd">{{ invalidPwd }}</p>
+
+        <h2 v-if="messageServer">{{ messageServer }}</h2>
+        <button type="submit" id="btnLogin" class="btn btn-white border border-black m-2">
+          Iniciar Sesion
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+  <Loader v-if="this.loading"></Loader>
+</template>
 <script>
 import Loader from "./Loader.vue";
 import { ref } from "vue";
 import api from "@/services/apiUsers.js"
+import './styles/login.css'
 export default {
   components: {
     Loader,
   },
   data() {
     return {
-      inputClass: [
-        "form-group ",
-        "mb-4",
-        "d-flex ",
-        "text-white",
-        "flex-column",
-        "bg-black",
-        "border",
-        "border-dark",
-        "rounded-2",
-        "h5",
-      ],
       correo: null,
       password: null,
       passwordFieldType: "password",
@@ -116,83 +155,3 @@ export default {
   },
 };
 </script>
-
-<template>
-  <div id="login" class="border border-black rounded-5 mx-auto my-auto">
-    <div class="d-flex flex-column m-5">
-      <form class="form d-flex flex-column" @submit.prevent="login">
-        <h1 class="align-self-center">Login</h1>
-        <label>Correo</label>
-        <input
-          type="text"
-          v-model="correo"
-          id="inputCorreo"
-          required
-          :class="inputClass"
-          @input="isValidEmail()"
-        />
-        <p v-if="!validcorreo" id="alertUser">Correo invalido</p>
-
-        <label>Contraseña</label>
-        <div class="d-flex align-items-center">
-          <input
-            required
-            id="inputPass"
-            :type="passwordFieldType"
-            v-model="password"
-            :class="inputClass"
-            @input="isValidPwd()"
-          />
-
-          <button
-            type="button"
-            class="mb-4 btn btn-white"
-            @click="togglePasswordVisibility"
-            id="btnView"
-          >
-            <img src="../assets/view.svg" class="p-0" />
-          </button>
-        </div>
-        <p v-if="!validPwd" id="alertpwd">{{ invalidPwd }}</p>
-
-        <h2 v-if="messageServer">{{ messageServer }}</h2>
-        <button type="submit" id="btnLogin" class="btn btn-white border border-black m-2">
-          Iniciar Sesion
-        </button>
-      </form>
-    </div>
-  </div>
-  <Loader v-if="this.loading"></Loader>
-</template>
-<style>
-#login {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-#btnView {
-  position: relative;
-  align-self: flex-end;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  gap: 2px;
-}
-
-#inputPass {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-}
-
-img {
-  position: relative;
-  width: 50px;
-  height: 50px;
-  padding: 0;
-  margin: 0;
-}
-</style>
