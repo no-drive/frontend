@@ -1,14 +1,9 @@
 <script >
 import { mapState } from 'vuex'; // Importa mapState desde Vuex
-
-import formulario from './dashboard/formulario.vue';
 import configUsuario from './dashboard/configUsuario.vue';
-import listElements from './dashboard/listElements.vue';
-import modalShare from './dashboard/modalShare.vue';
 import './styles/dashboard.css';
-
 export default {
-
+    name:'DashboardComponent',
     methods: {
         navigateLogin() {
             this.$router.push("/");
@@ -28,10 +23,7 @@ export default {
         }
     },
     components: {
-        formulario,
         configUsuario,
-        listElements,
-        modalShare
     }, computed: {
         ...mapState(['user'])
 
@@ -40,25 +32,13 @@ export default {
 </script>
 
 
-<template >
-    <modalShare class="modal" :file="file" v-if="showModalPeople" @closeModal="showModalPeople = false"></modalShare>
-    <div id="dashboard">
-        <div id="divConfigUser" class="bg-black">
+<template>
+    <div id="dashboard" class=" shadow-md rounded-lg overflow-hidden flex h-full  w-full">
+        <div id="divConfigUser" class="w-1/6">
             <configUsuario v-if="showModal" @close="showModal = false"></configUsuario>
         </div>
-        <div id="divContent">
-           
-            <div id="divlistElements">
-                <listElements :message="message"  @modal-open="openModal"></listElements>
-            </div>
-            <router-link to="/dashboard/users">holi</router-link>
-            <router-view></router-view>
-        </div>
-        <div id="derecha">
-            <div id="divForm">
-                <formulario @messageFromChildOne="updateMessage" :usuario="usuario" />
-            </div>
-        </div>
+    <router-view></router-view>
     </div>
 </template>
+
 

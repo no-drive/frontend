@@ -1,15 +1,28 @@
 <template>
     <!-- Sidebar -->
-    <div class="d-flex flex-column bg-blue p-2" id="wrapper">
-        <h1 class="text-center mt-10">Configuración</h1>
-        <button @click="navigateChpassword" :class=classBtn>Cambiar clave</button>
-        <button @click="rmUser" :class=classBtn>Eliminar Cuenta</button>
-        <button @click="rmall()" :class=classBtn>Eliminar Todo</button>
-        <button @click="closeSesion" :class=classBtn>Cerrar Sesion</button>
-        <router-link id="btnRegister" :class=classBtn to="/register"
-        >Registrarse</router-link
-      >
-    </div>
+<div class=" w-full h-lvh relative" id="wrapper">
+  <router-link to="/dashboard/files" class=" mt-6 text-center p-6 text-3xl font-bold text-indigo-700">Configuración</router-link>
+  <div id="container_opcions" class="grid h-auto gap-2 justify-center relative p-6 ">
+    <button @click="navigateChpassword" :class=btnclass>
+      Cambiar clave
+    </button>
+    <button @click="rmall()" :class=btnclass>
+      Eliminar Todo
+    </button>
+    <router-link id="btnRegister" :class=btnclass to="/register">
+      Registrarse
+    </router-link>
+    <router-link to="/dashboard/users" :class=btnclass >Gestión de usuarios</router-link>
+    <router-link to="/dashboard/groups" :class=btnclass >Gestión de grupos</router-link>
+    <router-link to="/dashboard/shared" :class=btnclass >Compartidos</router-link>
+
+    <button @click="closeSesion" :class=btnclass>
+      Cerrar Sesión
+    </button>
+
+  </div>
+</div>
+
 </template>
 <script>
 import { mapMutations } from 'vuex';
@@ -18,51 +31,14 @@ export default {
     data() {
         return {
             url: import.meta.env.VITE_BASE_URL,
-            classBtn: ['bg-white', 'rounded-2', 'p-2', 'text-center']
-
+            classBtn: ['bg-white', 'rounded-2', 'p-2', 'text-center'],
+            btnclass :['bg-gray-100 rounded-lg text-black hover:bg-indigo-900 transition duration-300 ease-in-out  p-6	hover:text-white']
         }
     },
     methods: {
         ...mapMutations(['increment']),
         closeModal() {
             this.$emit('close'); // Emitir evento para cerrar el modal en el componente padre
-        },
-        rmUser() {
-
-            /*
-                Eliminacion del Usuario:
-                - ELiminar usuario de la base de datos.
-                - Eliminar todos los documentos de este id_usuario.
-            */
-            const jwt = localStorage.getItem('jwtToken');
-            if (jwt) {
-                fetch(this.url + '/users/DeleteUser', {
-                    method: 'DELETE',
-                    headers: {
-                        "content-type": "application/json",
-                        Authorization: jwt
-                    },
-                }).then(response => {
-                    if (response.status == 200) {
-                        response.json()
-                            .then(async data => {
-                                console.log(data);
-                                /*
-                                TO-DO
-                                - Mostrar que se elimino de forma correcta al usuario
-                                */
-                                localStorage.removeItem('jwtToken');
-                                this.$router.push("/");
-                            })
-                    }
-                    if (response.status == 401) {
-                        return;
-                    }
-                }).catch(() => {
-                    console.log("error")
-                })
-
-            }
         },
         /*
         Remove all

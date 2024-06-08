@@ -28,7 +28,7 @@
             v-model="password"
             :class="inputClass"
             @input="isValidPwd()"
-          />
+          />  
 
           <button
             type="button"
@@ -100,7 +100,7 @@ export default {
       await this.$store.dispatch("login", datos.response.userData);
                 localStorage.setItem("jwtToken", datos.response.token);
                 this.loading = false;
-                this.$router.push("/dashboard");
+                this.$router.push("/dashboard/files");
       
     },
     togglePasswordVisibility() {

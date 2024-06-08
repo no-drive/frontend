@@ -1,13 +1,11 @@
 <template>
-    <div>
-      <h1>Dashboard de Usuarios</h1>
+    <div class=" w-full h-full  p-6">
       <tableUsersVue/>
     </div>
   </template>
   
   <script>
 import tableUsersVue from './tableUsers.vue';
-
   export default {
     components:{tableUsersVue}
   };

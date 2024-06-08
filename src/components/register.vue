@@ -30,7 +30,7 @@ export default {
       alert: ref(false),
       alertMessage: undefined,
     };
-  },
+  },  
   methods: {
     /*
         Metodo para registar un usuario en la base de datos
@@ -111,12 +111,12 @@ export default {
 </script>
 
 <template>
-  <div id="register" class="border border-black border-primary rounded-4">
-    <div class="m-5 d-flex flex-column">
+  <div id="register" class="">
+    <div class="p-5 flex-col bg-red-600 h-full">
       <form
         id="formularioRegistro"
         @submit.prevent="register()"
-        class="form-group d-flex flex-column"
+        class="form-group justify-center relative flex bg-amber-400 flex-col"
       >
         <h1 class="mb-4">Registro De usuarios</h1>
         <input

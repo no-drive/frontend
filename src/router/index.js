@@ -4,6 +4,9 @@ import dashboard from "../components/dashboard.vue";
 import register from "../components/register.vue";
 import chpassword from "../components/chpassword.vue";
 import dashboardUsers from "../components/dashboardUsers/dashboardUsers.vue";
+import Mainview from '../components/dashboard/mainview.vue';
+import Viewgroup from '../components/grupos/viewgroup.vue';
+import viewcompartir from '../components/compartir/viewcompartir.vue';
 const url = import.meta.env.VITE_BASE_URL;
 const routes = [
   {
@@ -15,9 +18,20 @@ const routes = [
     path: "/dashboard",
     name: "dashboard",
     component: dashboard,
-    children:[{
-      path:'users',
-      component:dashboardUsers
+    children: [{
+      path: 'users',
+      component: dashboardUsers,
+    },
+    {
+      path: 'files',
+      component: Mainview
+    }, {
+      path: 'groups',
+      component: Viewgroup
+    },
+    {
+      path: 'shared',
+      component: viewcompartir
     }],
     meta: { requiresAuth: true }
   }, {
@@ -31,6 +45,11 @@ const routes = [
     component: chpassword,
     meta: { requiresAuth: true }
   },
+  {
+    path: "/prueba",
+    name: "prueba",
+    component: dashboardUsers
+  }
 ];
 
 

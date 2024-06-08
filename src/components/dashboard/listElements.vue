@@ -1,48 +1,33 @@
 <template>
-    <div class="border border-black m-2 mt-0 rounded-2">
-        <ul class="p-0" v-if="listaElementos && cambiar">
-            <div class="border border-black m-2 p-2 elements" v-for="(element, indice) in listaElementos" :key="indice">
-                <iframe v-if="element.tipo == 'application/pdf'" :src="element.fileUrl" class="imagenes"/>
-                <img  v-if="element.tipo.startsWith('image/')" :src="element.fileUrl" class="imagenes">
-                <div class="text-center ">
-                    <h1>Titulo:{{ element.filename }}</h1>
-                    <h3>Fecha:{{ element.fecha }}</h3>
+    <div class="rounded-lg bg-white m-9 p-2 overflow-auto">
+        <div id="containerList" class="overflow-auto rela">
+            <ul class="w-full flex flex-col p-2 abso" v-if="listaElementos && cambiar">
+                <div class="grid grid-cols-3 gap-4 p-4" v-for="(element, indice) in listaElementos" :key="indice">
+                    <div class="relative "> 
+                    <iframe v-if="element.tipo == 'application/pdf'" :src="element.fileUrl" class="absolute inset-0 w-full h-full rounded-lg shadow-lg object-cover"/>
+                    <img  v-if="element.tipo.startsWith('image/')" :src="element.fileUrl" class="absolute inset-0 w-full h-full rounded-lg shadow-lg object-cover">
                 </div>
-                <div class="container d-flex flex-column  justify-content">
-                    <button class="m-3 btn btn-danger" @click="eliminar(element)">eliminar</button>
-                    <button class="m-3 btn btn-success" @click="share(element)">compartir</button>
-                    <button class="m-3 btn btn-warning " @click="descargar(element)">Descargar</button>
+                    <div class="text-center mt-2 overflow-hidden">
+                        <h1 class="font-bold text-lg">{{ element.filename }}</h1>
+                        <h3 class="text-gray-600">Fecha:{{ element.fecha }}</h3>
+                        <h4 class="text-gray-600">{{ formatFileSize(element.tamaño_archivo) }}</h4>
+                    </div>
+                    <div class="grid grid-rows-3 gap-4 p-2 mt-2">
+                        <button class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-700 transition duration-300" @click="eliminar(element)">Eliminar</button>
+                        <button class="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-700 transition duration-300" @click="share(element)">Compartir</button>
+                        <button class="bg-green-500 text-white py-1 px-2 rounded hover:bg-green-700 transition duration-300" @click="descargar(element)">Descargar</button>
+                    </div>
+                    <hr class="col-span-3" />
                 </div>
-            </div>
-        </ul>
-        <div>
-            <a v-for="n in this.seccion" @click="seccionar(n)">{{n}}</a>
+            </ul>
+        </div>
+        <div class="mt-4 flex justify-center">
+            <a v-for="n in this.seccion" @click="seccionar(n)" class="inline-block p-2 w-fit bg-gray-200 rounded m-1 cursor-pointer content-center hover:bg-gray-300 transition duration-300" >{{n}}</a>
         </div>
     </div>
 </template>
 <style>
-.elements {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    height: 100%;
-}
-.imagenes {
-        width: 100%;
-        height: 100%;
-    }
 
-@media (max-width: 700px) {
-    .elements {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    .imagenes {
-        width: 500px;
-        height: 500px;
-    }
-}
 </style>
 
 <script>
@@ -87,7 +72,15 @@ export default
             ...mapMutations(['increment']),
             seccionar(seccion){
                 this.refreshFiles(seccion)
-            },
+            }, formatFileSize(bytes) {
+                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+                if (bytes === 0) return '0 Bytes';
+
+                const i = Math.floor(Math.log(bytes) / Math.log(1024));
+                const value = parseFloat((bytes / Math.pow(1024, i)).toFixed(2));
+                
+                return `${value} ${sizes[i]}`;
+                    },
              async refreshFiles(seccion) {
                 const jwt = localStorage.getItem('jwtToken');
                 const post={
@@ -110,7 +103,13 @@ export default
                                 this.count =data.count[0]["COUNT(*)"];
                                 this.seccion =Math.ceil(this.count / 5); ;
                                 console.log(this.seccion);
+                                console.log(data.files);
                                  data.files.forEach(async(element) => {
+                                    const fecha=new Date(element.fecha);
+                                    const diferenciaHorariaColombia = -5 * 60 * 60 * 1000;
+                                    const fecha_colombia =new Date(fecha.getTime()+diferenciaHorariaColombia);
+                                    console.log(fecha_colombia);
+                                    element.fecha=fecha_colombia.toLocaleDateString()+"\n"+fecha_colombia.toLocaleTimeString();
                                     const fileId = element.id_files; // ID del archivo
                                     const url = `${this.url}/files/getfile/${fileId}`;
                                     const token = localStorage.getItem("jwtToken"); // Reemplaza con tu token de autenticación
