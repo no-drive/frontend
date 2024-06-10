@@ -40,9 +40,7 @@
         </div>
       </td>
       <td class="px-4 py-2">
-        <select v-if="user" v-model="user.id_estado" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600">
-          <option v-for="estado in estados" :key="estado.id_estados" :value="estado.id_estados">{{ estado.estado }}</option>
-        </select>
+        <p>{{user.estado}}</p>
       </td>
       <td class="px-4 py-2">
         <select v-if="user" v-model="user.id_privilegios" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600">
@@ -50,8 +48,8 @@
         </select>
       </td>
       <td class="px-4 py-2 space-x-2">
-        <button class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
-          {{ user ? "Guardar" : "Editar" }}
+        <button class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700" @click="modificarPrivilegios(user)">
+          {{ "Editar" }}
         </button>
         <button 
           @click="deleteUser(user.id_usuario)" 
@@ -97,7 +95,6 @@ export default {
                     },
                 }).then((response)=>{response.json().then(response=>{
                     this.users=response.response;
-                    console.log(this.users);
                 })               
                      })
             } catch (error) {
@@ -160,6 +157,7 @@ if (jwt) {
             response.json()
                 .then(async data => {
                     console.log(data);
+                    this.users=[];
                  this.fetchUsers();
                 })
         }
@@ -172,7 +170,34 @@ if (jwt) {
 
 }
 },
-        
+  modificarPrivilegios(user){
+    const jwt = localStorage.getItem('jwtToken');
+    if (jwt) {
+        fetch(this.url + '/users/privilegios', {
+            method: 'PATCH',
+            headers: {
+                "content-type": "application/json",
+                Authorization: jwt
+            },
+            body: JSON.stringify({id_privilegio:user.id_privilegios,id_usuario_revoke:user.id_usuario})
+        }).then(response => {
+            if (response.status == 200) {
+                response.json()
+                    .then(async data => {
+                    this.fetchUsers();
+                    })
+            }
+            if (response.status == 401) {
+                return;
+            }
+        }).catch(() => {
+            console.log("error")
+        })
+
+    }
+  }
+  
+
     },
 };
 </script>

@@ -7,15 +7,13 @@
       Cambiar clave
     </button>
     <button @click="rmall()" :class=btnclass>
-      Eliminar Todo
+      Eliminar todos los archivos
     </button>
-    <router-link id="btnRegister" :class=btnclass to="/register">
-      Registrarse
-    </router-link>
-    <router-link to="/dashboard/users" :class=btnclass >Gestión de usuarios</router-link>
-    <router-link to="/dashboard/groups" :class=btnclass >Gestión de grupos</router-link>
-    <router-link to="/dashboard/shared" :class=btnclass >Compartidos</router-link>
-
+    <router-link to="/dashboard/users" v-if="privilegios=='administrador'" :class=btnclass >Gestión de usuarios</router-link>
+    <router-link to="/dashboard/groups" v-if="privilegios=='administrador'" :class=btnclass >Gestión de grupos</router-link>
+    <router-link to="/dashboard/shared"  :class=btnclass >Compartidos</router-link>
+    <router-link to="/dashboard/notify"  :class=btnclass >Notifiaciones</router-link>
+    
     <button @click="closeSesion" :class=btnclass>
       Cerrar Sesión
     </button>
@@ -26,14 +24,21 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
+
 import '../styles/configUsuario.css';
+import { jwtDecode } from 'jwt-decode';
+
 export default {
     data() {
         return {
             url: import.meta.env.VITE_BASE_URL,
             classBtn: ['bg-white', 'rounded-2', 'p-2', 'text-center'],
-            btnclass :['bg-gray-100 rounded-lg text-black hover:bg-indigo-900 transition duration-300 ease-in-out  p-6	hover:text-white']
+            btnclass :['bg-gray-100 rounded-lg text-black hover:bg-indigo-900 transition duration-300 ease-in-out  p-6	hover:text-white'],
+            privilegios:'usuario'
         }
+    },
+    created(){
+        this.privilegiosUsuario();
     },
     methods: {
         ...mapMutations(['increment']),
@@ -81,6 +86,17 @@ export default {
         //Cambiar de ruta para cambiar la contraseña
         navigateChpassword() {
             this.$router.push("/changePassword")
+        },
+        privilegiosUsuario(){
+            const jwt = localStorage.getItem('jwtToken');
+
+            try {
+              const  decodedToken = jwtDecode(jwt);
+              this.privilegios= decodedToken.privilegios;
+            } catch (error) {
+                console.error('Token inválido:', error);
+                this.decodedToken = null;
+            }
         }
     },
     props: ['showModal'],

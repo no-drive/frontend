@@ -1,5 +1,6 @@
 <template>
-  <div class="group-manager p-6 w-full h-full border-b-indigo-900 rounded-xl shadow-md space-y-4">
+
+<div class="group-manager p-6 w-full h-full border-b-indigo-900 rounded-xl shadow-md space-y-4">
     <h2 class="text-2xl font-bold">Gestión de Grupos</h2>
 <table class="w-full table-auto">
       <thead class="bg-gray-100">
@@ -36,10 +37,14 @@
         </tr>
       </tbody>
     </table>
-    <button @click="openModal" class="bg-blue-600 p-7 rounded-xl text-white">Agregar grupo</button>
+    <button @click="openModal(1)" class="bg-blue-600 p-7 rounded-xl text-white">Agregar grupo</button>
 <!-- Modal -->
 <div v-if="showModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg p-6 w-full max-w-lg">
+      <div  class="bg-white rounded-lg p-6 w-full max-w-lg">
+
+              <!---Opcion 1 nuevo grupo-->
+
+        <div v-if="opcion==1">
         <h3 class="text-xl font-semibold mb-4">Nuevo Grupo</h3>
         <form @submit.prevent="saveGroup">
           <div class="mb-4">
@@ -60,22 +65,36 @@
             <button type="button" @click="closeModal" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700">Cancelar</button>
             <button @click="CreateUser(newGroup)" type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Guardar</button>
           </div>
+          
         </form>
       </div>
+
+      <!---Opcion 2 editar grupo-->
+      <div v-else-if="opcion==2">
+        <detailsGroup :grupo="selectGroup"  @closeModal="showModal = false"></detailsGroup>
+      </div>
     </div>
+    </div>
+
     </div>
 </template>
 <script>
 
+import detailsGroup from './details.vue';
 export default{
     name:'viewgroups-',
+    components:{
+      detailsGroup,
+    },
     data(){
         return {
             groups:[],
             url: import.meta.env.VITE_BASE_URL,
             showModal: false,
             users: [],
-            newGroup:{}
+            newGroup:{},
+            selectGroup:{},
+            opcion:0
         }
     },
     created() {
@@ -83,6 +102,11 @@ export default{
         this.fetchGroups()
     },
     methods:{
+      editGroup(group)
+      {
+        this.selectGroup=group;
+        this.openModal(2);
+      },
         async fetchGroups() {
             try {
                 const jwt = localStorage.getItem('jwtToken');
@@ -102,7 +126,8 @@ export default{
                     console.error('Error fetching users:', error);
                 }
             }
-            , openModal() {
+            , openModal(num) {
+            this.opcion=num;
             this.showModal = true;
             },
             closeModal() {

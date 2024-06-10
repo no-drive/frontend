@@ -101,35 +101,34 @@ export default
                             .then(async data => {
                                 this.listaElementos = [];
                                 this.count =data.count[0]["COUNT(*)"];
-                                this.seccion =Math.ceil(this.count / 5); ;
-                                console.log(this.seccion);
-                                console.log(data.files);
+                                this.seccion =Math.ceil(this.count / 5); 
                                  data.files.forEach(async(element) => {
                                     const fecha=new Date(element.fecha);
                                     const diferenciaHorariaColombia = -5 * 60 * 60 * 1000;
                                     const fecha_colombia =new Date(fecha.getTime()+diferenciaHorariaColombia);
-                                    console.log(fecha_colombia);
                                     element.fecha=fecha_colombia.toLocaleDateString()+"\n"+fecha_colombia.toLocaleTimeString();
                                     const fileId = element.id_files; // ID del archivo
                                     const url = `${this.url}/files/getfile/${fileId}`;
-                                    const token = localStorage.getItem("jwtToken"); // Reemplaza con tu token de autenticación
-                                    try {
-                                        const response =await fetch(url, {
-                                        method: "GET",
-                                        headers: {
-                                            "Authorization": `Bearer ${token}`
-                                        }
-                                        });
-                                        if (response.ok) {
-                                            const blob =  await response.blob();
-                                            const fileUrl = URL.createObjectURL(blob);
-                                            element.fileUrl =fileUrl;
-                                        } else {
-                                        console.error("Error al obtener el archivo:", response);
-                                        }
-                                    } catch (error) {
-                                        console.error("Error al hacer la solicitud:", error);
-                                    }   
+                                    if(element.tipo.startsWith('image/') || element.tipo=='application/pdf'){
+                                        const token = localStorage.getItem("jwtToken"); // Reemplaza con tu token de autenticación
+                                        try {
+                                            const response =await fetch(url, {
+                                            method: "POST",
+                                            headers: {
+                                                "Authorization": `Bearer ${token}`
+                                            }
+                                            });
+                                            if (response.ok) {
+                                                const blob =  await response.blob();
+                                                const fileUrl = URL.createObjectURL(blob);
+                                                element.fileUrl =fileUrl;
+                                            } else {
+                                            console.error("Error al obtener el archivo:", response);
+                                            }
+                                        } catch (error) {
+                                            console.error("Error al hacer la solicitud:", error);
+                                        }   
+                                    }
                                     this.listaElementos.push(element);
                         });
                             })
@@ -143,11 +142,33 @@ export default
             },
 
             //Metodo de descarga de un archivo
-            descargar(element) {
-                const a = document.createElement("a");
-                a.href = element.archivo;
-                a.download = element.nombre;
-                a.click();
+            async descargar(element){
+                console.log(element);
+                const fileId = element.id_files; 
+                const token = localStorage.getItem('jwtToken');
+                const url = `${this.url}/files/getfile/${fileId}`;
+                console.log(url);
+                try {
+                    const response =await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    },
+                    });
+                    if (response.ok) {
+                        const blob =  await response.blob();
+                        const fileUrl = URL.createObjectURL(blob);
+                        const a = document.createElement("a");
+                        a.href=fileUrl;
+                        a.download = element.filename;
+                        a.click();
+                    } else {
+                    console.error("Error al obtener el archivo:", response);
+                    }
+                } catch (error) {
+                    console.error("Error al hacer la solicitud:", error);
+                }   
+  
             },
 
             /*

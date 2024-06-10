@@ -11,7 +11,7 @@
         </div>
         <div id="derecha" class="w-1/4">
             <div id="divForm">
-                <formulario @messageFromChildOne="updateMessage" :usuario="usuario" />
+                <formulario />
             </div>
         </div>
 </template>    
@@ -20,6 +20,7 @@
 import { mapState } from 'vuex'; // Importa mapState desde Vuex
 import formulario from './formulario.vue';
 import listElements from './listElements.vue';
+import ModalShare from './modalShare.vue';
 export default {
     name: 'MainViewComponent',
     data() {
@@ -35,11 +36,13 @@ export default {
             this.file = file;
             this.showModalPeople = true
         },
+        updateMessage(){}
 
     },
     components: {
         formulario,
-        listElements
+        listElements,
+        ModalShare
     }, computed: {
         ...mapState(['user'])
     }

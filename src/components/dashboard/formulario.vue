@@ -34,12 +34,6 @@ export default {
     methods: {
         ...mapMutations(['increment']),
     
-        /*
-        Subir archivo al servidor
-        - Valida el JWT.
-        - Toma el id_usuario y sube el archivo a una ruta especifica.
-        - Guarda esto en la base de datos
-        */
         subirArchivo() {
             const formulario = new FormData(document.querySelector('#formulario'));
             const jwt = localStorage.getItem('jwtToken');
@@ -78,8 +72,7 @@ export default {
                 xhr.setRequestHeader('Authorization', jwt);
                 xhr.send(formulario);
                 this.loading = undefined;
-                this.sendMessage();
-                this.cleanform();
+                this.increment();
             } else {
                 const inputName = document.querySelector('#inputName');
                 inputName.classList.add('warning');
@@ -94,13 +87,8 @@ export default {
             this.name = '';
             document.querySelector('#inputfile').value = '';
         },
-        sendMessage() {
-      this.$emit('messageFromChildOne', 'true');
-    }
     },
-    props: {
-        usuario: Object,
-    }
+
 }
 </script>
 

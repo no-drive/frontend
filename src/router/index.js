@@ -7,6 +7,7 @@ import dashboardUsers from "../components/dashboardUsers/dashboardUsers.vue";
 import Mainview from '../components/dashboard/mainview.vue';
 import Viewgroup from '../components/grupos/viewgroup.vue';
 import viewcompartir from '../components/compartir/viewcompartir.vue';
+import Viewnotify from '../components/notifications/viewnotify.vue';
 const url = import.meta.env.VITE_BASE_URL;
 const routes = [
   {
@@ -32,6 +33,9 @@ const routes = [
     {
       path: 'shared',
       component: viewcompartir
+    },{
+      path:'notify',
+      component: Viewnotify
     }],
     meta: { requiresAuth: true }
   }, {
