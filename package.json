@@ -9,7 +9,8 @@
     "dev": "vite",
     "format": "prettier --write src/",
     "preview": "vite preview",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "sonar": "node sonar-scanner.js"
   },
   "vitest": {
     "include": "**/*.test.js",
@@ -39,6 +40,7 @@
     "eslint": "^8.45.0",
     "eslint-plugin-vue": "^9.15.1",
     "prettier": "^3.0.0",
+    "sonarqube-scanner": "^4.0.1",
     "vite": "^4.5.3"
   }
 }

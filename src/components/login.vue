@@ -6,8 +6,8 @@
   <div id="login" class="w-1/2 p-8 justify-center" >
     <div class="caja justify-center @">
       <form id= "formulario" class="mb-4 justify-center h-100" @submit.prevent="login">
-        <h1 class="text-violet-950 text-3xl font-bold mb-6 " id="titulo">Bienvenidos</h1>
-        <label class="subtitulo">Correo</label>
+        <h1 class="text-violet-950 text-3xl font-bold mb-6 tiny5-regular " id="titulo">Bienvenidos</h1>
+        <label class="subtitulo tiny5-regular">Correo</label>
         <br>
         <input
           type="email"
@@ -17,9 +17,9 @@
           :class="inputClass"
           @input="isValidEmail()"
         />
-        <p v-if="!validcorreo" id="alertUser">Correo invalido</p>
+        <p v-if="!validcorreo" class="text-mono text-red-500" id="alertUser">Correo invalido</p>
         <br>
-        <label class="block text-sm font-medium text-gray-700">Contraseña</label>
+        <label class="block text-sm font-medium text-mono text-gray-700">Contraseña</label>
         <div id="passDiv" class="flex items-center border border-gray-300 rounded-md overflow-hidden mb-4 ">
           <input
             required
@@ -39,10 +39,10 @@
             <img src="../assets/view.svg" id="eyeboton" class="h-6 w-6" />
           </button>
         </div>
-        <p v-if="!validPwd" id="alertpwd">{{ invalidPwd }}</p>
+        <p v-if="!validPwd" id="alertpwd" class="text-mono text-red-500">{{ invalidPwd }}</p>
 
-        <h2 v-if="messageServer">{{ messageServer }}</h2>
-        <button type="submit" id="btnLogin" class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+        <h2 v-if="messageServer" class="text-mono">{{ messageServer }}</h2>
+        <button type="submit" id="btnLogin" class="w-full text-mono m-2 py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
           Iniciar Sesion
         </button>
       </form>
@@ -69,7 +69,7 @@ export default {
       passwordFieldType: "password",
       messageServer: null,
       validcorreo: ref(true),
-      inputClass:"mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm flex-grow px-3 py-2 focus:outline-none",
+      inputClass:"text-mono mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm flex-grow px-3 py-2 focus:outline-none  ",
       validPwd: ref(true),
       url: import.meta.env.VITE_BASE_URL,
       loading: ref(false),
@@ -161,3 +161,13 @@ export default {
   },
 };
 </script>
+
+<style >
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Tiny5&display=swap');/* Define las clases para las fuentes */
+.text-mono {
+  font-family: "Roboto Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+</style>

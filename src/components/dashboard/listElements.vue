@@ -1,11 +1,12 @@
 <template>
-    <div class="rounded-lg bg-white m-9 p-2 overflow-auto">
-        <div id="containerList" class="overflow-auto rela">
-            <ul class="w-full flex flex-col p-2 abso" v-if="listaElementos && cambiar">
-                <div class="grid grid-cols-3 gap-4 p-4" v-for="(element, indice) in listaElementos" :key="indice">
+    <div class="rounded-lg bg-indigo-200 m-9 p-3 overflow-auto">
+        <div id="containerList" class="overflow-auto h-full text-mono ">
+            <ul class="w-full flex flex-col h-full p-2" v-if="listaElementos && cambiar">
+                <div class="grid grid-cols-3 gap-4 p-2 " v-for="(element, indice) in listaElementos" :key="indice">
                     <div class="relative "> 
                     <iframe v-if="element.tipo == 'application/pdf'" :src="element.fileUrl" class="absolute inset-0 w-full h-full rounded-lg shadow-lg object-cover"/>
                     <img  v-if="element.tipo.startsWith('image/')" :src="element.fileUrl" class="absolute inset-0 w-full h-full rounded-lg shadow-lg object-cover">
+                    <h1 v-else class="flex bg-slate-400 text-4xl text-white text items-center rounded-lg shadow-lg  justify-center text-center w-full h-full">{{separar_string(element.filename) }}</h1>
                 </div>
                     <div class="text-center mt-2 overflow-hidden">
                         <h1 class="font-bold text-lg">{{ element.filename }}</h1>
@@ -70,6 +71,12 @@ export default
 
         methods: {
             ...mapMutations(['increment']),
+            separar_string(nombre_archivo){
+                let partes = nombre_archivo.split('.');
+                // Obtener la extensión, que es el último elemento del arreglo
+                let extension = partes[partes.length - 1];
+                return extension;
+            },
             seccionar(seccion){
                 this.refreshFiles(seccion)
             }, formatFileSize(bytes) {

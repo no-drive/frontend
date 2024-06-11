@@ -45,6 +45,7 @@
 <script>
 
 export default{
+    name:'ViewCompartir',
     data(){
         return{
         url: import.meta.env.VITE_BASE_URL,
@@ -57,12 +58,8 @@ export default{
             this.compartidosdelgrupo()
         },
     methods:{
-        async refreshFiles(seccion) {
+        async refreshFiles() {
                 const jwt = localStorage.getItem('jwtToken');
-                const post={
-                    "limit":5,
-                    "off":(seccion!=1?(seccion-1)*5:0)
-                }
                 await fetch(this.url + '/share/shared', {
                     method: 'GET',
                     headers: {

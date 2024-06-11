@@ -1,9 +1,9 @@
 <template>
-  <div class="d-flex">
-    <div class="border mx-auto border-black rounded-5 m-5">
+<div class="flex justify-center items-center h-screen">
+  <div class=" border-black rounded-5 p-5 flex-col ">
       <form
         @submit.prevent="changePassword()"
-        class="abs-center form d-flex flex-column p-4"
+         class="border-4 border-black rounded-5 p-5 w-auto relative flex text-mono text-sm gap-4 flex-col"
       >
         <label>Contraseña</label>
         <div class="d-flex align-items-center">
@@ -21,7 +21,7 @@
             @click="togglePasswordVisibility('1')"
             id="btnView"
           >
-            <img src="../assets/view.svg" class="p-0" />
+            <img src="../assets/view.svg" class="p-0 h-5" />
           </button>
         </div>
         <p v-show="validPwdPASS" id="alertpwd"></p>
@@ -41,7 +41,7 @@
             @click="togglePasswordVisibility('2')"
             id="btnView"
           >
-            <img src="../assets/view.svg" class="p-0" />
+            <img src="../assets/view.svg" class="p-0 h-5" />
           </button>
         </div>
         <p v-show="validPwdNEWPASS" id="alertpwdNEW"></p>
@@ -62,16 +62,16 @@
             @click="togglePasswordVisibility('3')"
             id="btnView"
           >
-            <img src="../assets/view.svg" class="p-0" />
+            <img src="../assets/view.svg" class="p-0 h-5" />
           </button>
         </div>
         <p v-if="validPwdREPEATPASS" id="alertpwdREPEAT"></p>
 
-        <button class="btn btn-white border border-black m-2" type="submit">
+        <button class="border border-black m-2" type="submit">
           Cambiar contraseña
         </button>
         <a
-          class="btn btn-white border border-black m-2"
+          class="border border-black m-2"
           @click="returnDashboard"
           >Regresar</a
         >
@@ -92,16 +92,13 @@ export default {
       pass: undefined,
       repeatpass: undefined,
       inputClass: [
-        "form-group ",
-        "mb-4",
+      "p-3 gap-2",
+        "text-black",
         "d-flex ",
-        "text-white",
         "flex-column",
-        "bg-black",
         "border",
         "border-dark",
-        "rounded-2",
-        "h5",
+        "rounded-3",
       ],
       url: import.meta.env.VITE_BASE_URL,
       Loader: false,
@@ -212,7 +209,7 @@ export default {
     },
     //Metodo de regresar al incio
     returnDashboard() {
-      this.$router.push("/dashboard");
+      this.$router.push("/dashboard/files");
     },
     togglePasswordVisibility(_input) {
       switch (_input) {

@@ -1,7 +1,12 @@
 <template>
+        <div v-if="this.open==true" class="fixed inset-0 bg-gray-800 bg-opacity-75 h-screen flex items-center justify-center z-50">
+        <div  class="bg-white rounded-lg p-6 w-full max-w-lg ">
+      <register v-if="this.open==true" @close_register="this.open=false"></register>
+        </div>
+        </div>
     <div class="user-manager p-6 w-full h-full border-b-indigo-900 rounded-xl shadow-md space-y-4">
       <h2 class="text-2xl font-bold">Gestión de Usuarios</h2>
-      <register v-if="this.open==true"></register>
+
       </div>
       <table class="w-full table-auto">
   <thead class="bg-gray-100">

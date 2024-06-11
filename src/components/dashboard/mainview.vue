@@ -1,18 +1,17 @@
 <template>
+    <div v-if="showModalPeople" class="fixed inset-0 bg-gray-800 bg-opacity-75 h-screen flex items-center justify-center z-50">
+        <div  class="bg-white rounded-lg p-6 w-full max-w-lg">
 <modalShare class="modal" :file="file" v-if="showModalPeople" @closeModal="showModalPeople = false"></modalShare>
-  <div class="bg-blue-100 w-2/3 h-screen relative">
-            <h2>Busqueda</h2>
-            <div class=" h-1/5">  
-            </div>
-            <h2>Documentos recientes</h2>
-            <div id="divlistElements" class=" h-4/5 relative overflow-auto">
+        </div>
+    </div>
+        <div class="bg-white-500 w-2/3 h-screen relative">
+            <h2 class="text-mono text-3xl p-3 text-black">Documentos recientes</h2>
+            <div id="divlistElements" class=" h-full relative overflow-auto">
                 <listElements :message="message"  @modal-open="openModal"></listElements>
             </div>
         </div>
-        <div id="derecha" class="w-1/4">
-            <div id="divForm">
+        <div id="derecha" class="w-1/4 h-screen">
                 <formulario />
-            </div>
         </div>
 </template>    
 

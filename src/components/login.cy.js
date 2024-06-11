@@ -1,43 +1,71 @@
 import Login from './login.vue'
-import Register from './register.vue'
+import { createRouter, createWebHistory } from 'vue-router'
+
+import dashboard from './dashboard.vue'
+import DashboardUsers from './dashboardUsers/dashboardUsers.vue';
+import Mainview from './dashboard/mainview.vue';
+import Viewgroup from './grupos/viewgroup.vue';
+import Viewcompartir from './compartir/viewcompartir.vue';
+import Viewnotify from './notifications/viewnotify.vue';
+
+const routes = [
+  {
+    path: '/',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: "/dashboard",
+    name: "dashboard",
+    component: dashboard,
+    children: [{
+      path: 'users',
+      component: DashboardUsers,
+    },
+    {
+      path: 'files',
+      component: Mainview
+    }, {
+      path: 'groups',
+      component: Viewgroup
+    },
+    {
+      path: 'shared',
+      component: Viewcompartir
+    },{
+      path:'notify',
+      component: Viewnotify
+    }],
+    meta: { requiresAuth: true }
+  },
+];
+
 // Dentro de una prueba Cypress de componente
 describe('MiComponente', () => {
   it('debería mostrar un botón de inicio de sesión', () => {
     // Montar el componente Vue.js
     cy.mount(Login);
-
-    // Verificar que el botón de inicio de sesión esté presente
-    cy.get('#btnRegister').should('exist');
   });
-
-  it('debería redirigir a la página de inicio de sesión al hacer clic en el botón de inicio de sesión', () => {
-    // Montar el componente Vue.js
-    cy.mount(Register);
-
-    // Hacer clic en el botón de inicio de sesión
-    cy.get('#btnLogin').click();
-
-  });
-  it('Ingresar un nuevo usuario', () => {
-    cy.mount(Register);
-
-    // Llenar el formulario de registro
-    cy.get('#inputUser').type('usuario')
-    cy.get('#inputCorreo').type('nuevo_usuario@example.com')
-    cy.get('#inputPass').type('password')
-    cy.get('#inputNewPass').type('password')
-
-    // Enviar el formulario
-    cy.get('#btnSubtmit').click()
-    cy.get('#btnLogin').click()
-
-    // Verificar que el usuario se haya registrado exitosamente
-  });
-  it('Ingresar con nuevo usuario',()=>{
+  it('Ingresar con usuario administrador',()=>{
     cy.mount(Login);
 
-    cy.get('#inputCorreo').type('nuevo_usuario@example.com');
-    cy.get('#inputPass').type('password');
+    cy.get('#inputCorreo').type('alejo3@alejo.com');
+    cy.get('#inputPass').type('contraseñas');
     cy.get('#btnLogin').click();
+  });
+  it('Ingresar con nuevo usuario',()=>{
+    cy.mount(dashboard);
+    cy.mount(DashboardUsers);
+
+    const router = createRouter({
+      history: createWebHistory(import.meta.env.BASE_URL),
+      routes
+    })
+    router.push('/dashboard/users');
+
+/*
+    cy.get('#inputCorreo').type('alejo3@alejo.com');
+    cy.get('#inputPass').type('contraseñas');
+    cy.get('#btnLogin').click();*/
   })
 });

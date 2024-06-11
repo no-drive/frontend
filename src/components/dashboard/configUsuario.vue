@@ -1,21 +1,22 @@
 <template>
     <!-- Sidebar -->
-<div class=" w-full h-lvh relative" id="wrapper">
-  <router-link to="/dashboard/files" class=" mt-6 text-center p-6 text-3xl font-bold text-indigo-700">Configuración</router-link>
-  <div id="container_opcions" class="grid h-auto gap-2 justify-center relative p-6 ">
+<div class=" bg-indigo-600 h-full flex flex-col p-5" id="wrapper">
+  <router-link to="/dashboard/files" class="text-center text-3xl p-2 font-bold text-white font-mono">Home</router-link>
+  <div id="container_opcions" class="h-full gap-10 flex justify-around flex-col font-mono text-center p-2">
+
     <button @click="navigateChpassword" :class=btnclass>
-      Cambiar clave
+      Cambiar clave <img src="../../assets/iconpadlock.png" class="h-5">
     </button>
     <button @click="rmall()" :class=btnclass>
-      Eliminar todos los archivos
+      Eliminar todos los archivos 
     </button>
-    <router-link to="/dashboard/users" v-if="privilegios=='administrador'" :class=btnclass >Gestión de usuarios</router-link>
-    <router-link to="/dashboard/groups" v-if="privilegios=='administrador'" :class=btnclass >Gestión de grupos</router-link>
-    <router-link to="/dashboard/shared"  :class=btnclass >Compartidos</router-link>
-    <router-link to="/dashboard/notify"  :class=btnclass >Notifiaciones</router-link>
+    <router-link to="/dashboard/users" v-if="privilegios=='administrador'" :class=btnclass >Gestión de usuarios <img src="../../assets/iconsuser.png" class="h-4"></router-link>
+    <router-link to="/dashboard/groups" v-if="privilegios=='administrador'" :class=btnclass >Gestión de grupos <img src="../../assets/iconsgroup.png" class="h-4"></router-link>
+    <router-link to="/dashboard/shared"  :class=btnclass >Compartidos <img src="../../assets/iconsshare.png" class="h-5"></router-link>
+    <router-link to="/dashboard/notify"  :class=btnclass >Notifiaciones <img src="../../assets/iconsbell.png" class="h-5"></router-link>
     
-    <button @click="closeSesion" :class=btnclass>
-      Cerrar Sesión
+    <button @click="closeSesion" :class=btnclass class="">
+      Cerrar Sesión<img src="../../assets/iconslogout.png" class="h-5">
     </button>
 
   </div>
@@ -24,7 +25,6 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
-
 import '../styles/configUsuario.css';
 import { jwtDecode } from 'jwt-decode';
 
@@ -32,8 +32,7 @@ export default {
     data() {
         return {
             url: import.meta.env.VITE_BASE_URL,
-            classBtn: ['bg-white', 'rounded-2', 'p-2', 'text-center'],
-            btnclass :['bg-gray-100 rounded-lg text-black hover:bg-indigo-900 transition duration-300 ease-in-out  p-6	hover:text-white'],
+            btnclass :['bg-violet-200 h-auto rounded-lg text-black hover:bg-indigo-900 transition duration-300 ease-in-out  p-3	hover:text-white flex gap-2'],
             privilegios:'usuario'
         }
     },

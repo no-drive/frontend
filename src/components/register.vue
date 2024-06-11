@@ -5,16 +5,13 @@ export default {
   data() {
     return {
       inputClass: [
-        "form-group ",
-        "mb-4",
-        "text-white",
+        "p-3",
+        "text-black",
         "d-flex ",
         "flex-column",
-        "bg-black",
         "border",
         "border-dark",
-        "rounded-2",
-        "h5",
+        "rounded-3",
       ],
       user: {
         email: undefined,
@@ -112,13 +109,13 @@ export default {
 
 <template>
   <div id="register" class="">
-    <div class="p-5 flex-col bg-red-600 h-full">
+    <div class="p-5 flex-col gap-3 h-full">
       <form
         id="formularioRegistro"
         @submit.prevent="register()"
-        class="form-group justify-center relative flex bg-amber-400 flex-col"
+        class="form-group justify-center relative flex text-mono text-sm gap-4 flex-col"
       >
-        <h1 class="mb-4">Registro De usuarios</h1>
+        <h1 class="mb-4 text-2xl">Registro De usuarios</h1>
         <input
           placeholder="Usuario"
           id="inputUser"
@@ -166,13 +163,9 @@ export default {
           <p class="h6 m-0 p-1">Registrarse</p>
         </button>
       </form>
-      <router-link
-        class="mx-auto btn btn-white m-3 border border-black h6"
-        to="/"
-        id="btnLogin"
-      >
-        <p class="h6 m-0 p-1">Iniciar Sesion</p>
-      </router-link>
+      <button @click=" this.$emit('close_register')" class="border border-black my-4 ">
+        <p class="h6 m-0 p-1">Cerrar modal</p>
+      </button>
     </div>
   </div>
   <div class="modal" v-if="alert">
@@ -186,32 +179,3 @@ export default {
     </modal>
   </div>
 </template>
-
-<style>
-#register {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.content {
-  background-color: white;
-  position: absolute;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  padding: 10em;
-}
-
-.modal {
-  width: 100%;
-  height: 100%;
-  z-index: 99;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-</style>

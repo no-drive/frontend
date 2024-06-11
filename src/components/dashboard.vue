@@ -34,8 +34,8 @@ export default {
 
 <template>
     <div id="dashboard" class=" shadow-md rounded-lg overflow-hidden flex h-full  w-full">
-        <div id="divConfigUser" class="w-1/6">
-            <configUsuario v-if="showModal" @close="showModal = false"></configUsuario>
+        <div id="divConfigUser" class="w-1/6 h-screen relative">
+            <configUsuario v-if="showModal" @close="showModal = false" class="h-full"></configUsuario>
         </div>
     <router-view></router-view>
     </div>
